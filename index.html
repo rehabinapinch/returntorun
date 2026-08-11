@@ -1,1128 +1,857 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessment Note Templates</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: #f5f9ff;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            padding: 2rem 1.5rem;
-            color: #1e2a3a;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 1.9rem;
-            font-weight: 600;
-            color: #1e3a6f;
-            border-bottom: 3px solid #b6d0f0;
-            padding-bottom: 0.3rem;
-            margin-bottom: 1.2rem;
-        }
-        .sub {
-            color: #3a5a7a;
-            font-size: 0.95rem;
-            margin-top: -0.5rem;
-            margin-bottom: 2rem;
-            display: block;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin: 1.8rem 0 2.5rem;
-        }
-        .preset-btn {
-            background: white;
-            border: 1px solid #d6e4f5;
-            border-radius: 14px;
-            padding: 1rem 0.5rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-            color: #1e3a6f;
-            box-shadow: 0 3px 8px rgba(0,20,50,0.04);
-            cursor: pointer;
-            transition: 0.18s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .preset-btn:hover {
-            background: #e8f0fe;
-            border-color: #7a9fd8;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(30,58,111,0.08);
-        }
-        .preset-btn small {
-            font-weight: 400;
-            color: #5b7a9a;
-            font-size: 0.75rem;
-        }
-        .note-area {
-            background: white;
-            border-radius: 18px;
-            padding: 1.8rem;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.03);
-            border: 1px solid #e6edf8;
-        }
-        .note-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
-        }
-        .note-header h2 {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #1e3a6f;
-        }
-        .actions {
-            display: flex;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-        .actions button {
-            background: #f0f6ff;
-            border: 1px solid #c7daf5;
-            border-radius: 40px;
-            padding: 0.4rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #1e3a6f;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .actions button:hover {
-            background: #dce8fd;
-            border-color: #7a9fd8;
-        }
-        .copy-btn {
-            background: #1e3a6f;
-            color: white;
-            border: none;
-            padding: 0.45rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .copy-btn:hover {
-            background: #14305a;
-        }
-        textarea {
-            width: 100%;
-            min-height: 480px;
-            border: 1px solid #dce6f0;
-            border-radius: 16px;
-            padding: 1.2rem;
-            font-family: 'Menlo', 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.65;
-            color: #1a2a44;
-            resize: vertical;
-            background: #fbfdff;
-            transition: 0.15s;
-        }
-        textarea:focus {
-            border-color: #4a7fc7;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(74,127,199,0.15);
-        }
-        .footer-note {
-            margin-top: 1.2rem;
-            font-size: 0.8rem;
-            color: #5b7a9a;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .badge {
-            background: #eaf1fc;
-            padding: 0.25rem 1rem;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            color: #1e3a6f;
-            font-weight: 500;
-        }
-        .empty-state {
-            color: #7a94b0;
-            font-style: italic;
-            padding: 1rem 0 0.5rem;
-            border-top: 1px dashed #d6e4f5;
-            margin-top: 0.5rem;
-        }
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
-            .grid { grid-template-columns: repeat(2, 1fr); }
-            .note-header { flex-direction: column; align-items: stretch; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Run/Walk Program Selector · Professional</title>
+  <style>
+    /* reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f9fe;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 2rem 1.5rem;
+      color: #1a2639;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* header */
+    .app-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .brand h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0b2a3c;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .brand .sub {
+      font-size: 0.85rem;
+      color: #4b5f73;
+      margin-top: 0.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 0.9rem;
+    }
+
+    .controls .field-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      padding: 0.25rem 0.25rem 0.25rem 0.9rem;
+      border-radius: 60px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.03);
+    }
+
+    .controls label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #4b5f73;
+    }
+
+    .controls select {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #0b2a3c;
+      border-radius: 60px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234b5f73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      background-size: 12px 8px;
+    }
+
+    .controls select:hover {
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #1a2639;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.04);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: #1e3d5e;
+      color: white;
+      box-shadow: 0 4px 12px rgba(26, 58, 87, 0.15);
+      border: 1px solid transparent;
+    }
+
+    .btn-primary:hover {
+      background: #16324d;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(26, 58, 87, 0.20);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline {
+      background: transparent;
+      box-shadow: none;
+      border: 1px solid #d0d9e6;
+      color: #2c4058;
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: #b0bfd0;
+    }
+
+    /* main grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* card */
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem 1.75rem 2rem;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: box-shadow 0.2s;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #0b2a3c;
+      margin: 0;
+    }
+
+    .card-header .meta-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4b5f73;
+      background: #f1f5fa;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-header .meta-tag span {
+      background: white;
+      padding: 0.05rem 0.6rem;
+      border-radius: 40px;
+      color: #0b2a3c;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #4b5f73;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #ecf0f5;
+    }
+
+    /* program list */
+    .prog {
+      border-radius: 16px;
+      border: 1px solid #e7edf5;
+      background: white;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      margin-bottom: 0.75rem;
+    }
+
+    .prog:hover {
+      border-color: #cbd8e9;
+    }
+
+    .prog .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.25rem;
+      background: #fafcff;
+      cursor: pointer;
+      transition: background 0.1s;
+      user-select: none;
+    }
+
+    .prog .head:hover {
+      background: #f2f7ff;
+    }
+
+    .prog .head h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a3b57;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .chev {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e7edf5;
+      color: #3f5c7a;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.1), background 0.15s;
+      line-height: 1;
+    }
+
+    .prog.open .chev {
+      transform: rotate(90deg);
+      background: #eef5fd;
+      border-color: #b6cce2;
+    }
+
+    .prog .body {
+      padding: 0.25rem 1.25rem 1.5rem;
+      background: #fafdff;
+      display: none;
+      border-top: 1px solid #eef3fa;
+    }
+
+    .prog.open .body {
+      display: block;
+    }
+
+    /* week table */
+    .week-block {
+      margin-top: 0.25rem;
+    }
+
+    .week-block h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #29445e;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin: 0 0 0.6rem 0;
+      opacity: 0.7;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: #3a5775;
+      padding: 0.4rem 0.3rem 0.4rem 0;
+      border-bottom: 1px solid #e1e9f2;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 0.5rem 0.3rem 0.5rem 0;
+      border-bottom: 1px solid #ecf1f8;
+      color: #1d3349;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .day-label {
+      font-weight: 500;
+      color: #0b2a3c;
+    }
+
+    .badge-runwalk {
+      background: #eef4fa;
+      padding: 0.15rem 0.6rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1e3d5e;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      color: #6a7e96;
+      font-size: 0.95rem;
+      padding: 0.5rem 0;
+    }
+
+    .empty-state strong {
+      color: #1a3b57;
+      font-weight: 600;
+    }
+
+    /* scrollable list */
+    .prog-list-wrapper {
+      max-height: 65vh;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-track {
+      background: #f0f4fa;
+      border-radius: 10px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-thumb {
+      background: #cbd8e9;
+      border-radius: 10px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #b0c2d8;
+    }
+
+    /* sidebar — notes & copy */
+    .sidebar-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .notes-area {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .notes-area label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1a3b57;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .notes-area textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 0.9rem 1rem;
+      border: 1px solid #dbe3ed;
+      border-radius: 14px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #1a2639;
+      background: #fafdff;
+      resize: vertical;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .notes-area textarea:focus {
+      outline: none;
+      border-color: #7f9bbf;
+      box-shadow: 0 0 0 3px rgba(30, 61, 94, 0.08);
+    }
+
+    .copy-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .copy-section .copy-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn-copy {
+      background: white;
+      border: 1px solid #d0d9e6;
+      padding: 0.45rem 1.1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1e3d5e;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-copy:hover {
+      background: #eef5fd;
+      border-color: #b0c5de;
+    }
+
+    .btn-copy:active {
+      transform: scale(0.97);
+    }
+
+    .copy-feedback {
+      font-size: 0.8rem;
+      color: #4b6f8a;
+      min-height: 1.4em;
+      margin-top: 0.1rem;
+    }
+
+    .copy-feedback.success {
+      color: #1d7a4f;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e7edf5;
+      margin: 0.2rem 0 0.6rem;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem 0.75rem;
+      }
+
+      .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .controls {
+        flex-wrap: wrap;
+      }
+
+      .controls .field-group {
+        flex: 1;
+        min-width: 180px;
+        border-radius: 40px;
+      }
+
+      .card {
+        padding: 1.25rem 1rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .prog .head {
+        padding: 0.75rem 1rem;
+      }
+
+      .prog .body {
+        padding: 0.25rem 1rem 1.25rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-    <h1>📋 Assessment Note Templates</h1>
-    <span class="sub">Click a template to insert structured notes — ready for copy & paste.</span>
-
-    <div class="grid">
-        <div class="preset-btn" data-region="Neck">Neck <small>Cervical / Radiculopathy</small></div>
-        <div class="preset-btn" data-region="Shoulder">Shoulder <small>Rotator cuff / Impingement</small></div>
-        <div class="preset-btn" data-region="Low Back">Low Back <small>Lumbar / Radiculopathy</small></div>
-        <div class="preset-btn" data-region="Elbow">Elbow <small>Epicondylitis / Fracture</small></div>
-        <div class="preset-btn" data-region="Wrist">Wrist <small>TFCC / Tendinopathy</small></div>
-        <div class="preset-btn" data-region="Hand/Fingers">Hand & Fingers <small>Nerve / Tendon</small></div>
-        <div class="preset-btn" data-region="Hip & Groin">Hip & Groin <small>FAI / Labrum / Adductor</small></div>
-        <div class="preset-btn" data-region="Knee">Knee <small>Patellar / Meniscus / Ligament</small></div>
-        <div class="preset-btn" data-region="Leg">Leg <small>Tibia / Compartment / Stress</small></div>
-        <div class="preset-btn" data-region="Foot">Foot <small>Plantar / Achilles / Nerve</small></div>
+  <!-- header -->
+  <header class="app-header">
+    <div class="brand">
+      <h1>Return-to-Running · Program Selector</h1>
+      <div class="sub">App created by <a href="https://www.linkedin.com/in/runrehabpro/" target="_blank" style="color:#1e3d5e;text-decoration:none;font-weight:500;">Walden Cheung PT, MSc</a> · Programs: The Running Clinic &amp; Blaise Dubois PT</div>
+      <div class="sub" style="margin-top:0.25rem;opacity:0.7;font-size:0.8rem;">Select profile → Show Program → expand weeks to view intervals. Use notes &amp; copy below.</div>
     </div>
-
-    <div class="note-area">
-        <div class="note-header">
-            <h2 id="templateLabel">📄 Assessment Note</h2>
-            <div class="actions">
-                <button id="clearBtn">Clear</button>
-                <button id="copyBtn" class="copy-btn">📋 Copy Note</button>
-            </div>
-        </div>
-        <textarea id="noteEditor" placeholder="Select a template from above, or write your own note.&#10;All templates are structured for clinical documentation."></textarea>
-        <div class="footer-note">
-            <span class="badge"><div class="app-info">Created by <a href="https://www.linkedin.com/in/runrehabpro/">Walden Cheung PT, MSc.</a> Copyright 2026</div></span>
-            <span>v1.0 · 2026</span>
-        </div>
+    <div class="controls">
+      <div class="field-group">
+        <label for="profile">Profile</label>
+        <select id="profile">
+          <option value="minorInjury">Minor Injury (≈3 wk)</option>
+          <option value="majorInjury">Major Injury (≈8 wk)</option>
+          <option value="eliteAthlete">Elite Athlete (2 wk)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="showBtn">Show Program</button>
+      <button class="btn btn-outline" id="resetBtn">Reset</button>
     </div>
+  </header>
+
+  <!-- main grid: program + sidebar -->
+  <div class="grid">
+    <!-- main program card -->
+    <section class="card" id="programPanel">
+      <div class="card-header">
+        <h2 id="progTitle">Select a profile</h2>
+        <div class="meta-tag" id="weeksCount">—</div>
+      </div>
+      <div class="subtitle" id="progSubtitle">Programs displayed as expandable weeks — click a week to view daily intervals.</div>
+
+      <div class="prog-list-wrapper">
+        <div id="progContent">
+          <div class="empty-state">No program loaded. Click <strong>Show Program</strong> to preview.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- sidebar: notes + copy -->
+    <aside class="sidebar-card">
+      <!-- notes -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.5rem;">
+        <div class="notes-area">
+          <label for="notesInput">📝 Notes</label>
+          <textarea id="notesInput" placeholder="Add your clinical notes, patient progress, or modifications..."></textarea>
+        </div>
+      </div>
+
+      <!-- copy & paste tools -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.5rem;">
+        <div class="copy-section">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <span style="font-weight:600;font-size:0.9rem;color:#1a3b57;">📋 Copy Program</span>
+            <span style="font-size:0.75rem;color:#6a7e96;">(includes all weeks &amp; days)</span>
+          </div>
+          <div class="copy-actions">
+            <button class="btn-copy" id="copyProgramBtn">📄 Copy Program</button>
+            <button class="btn-copy" id="copyNotesBtn">📝 Copy Notes</button>
+          </div>
+          <div id="copyFeedback" class="copy-feedback"></div>
+          <hr class="divider" />
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:0.8rem;color:#4b5f73;">Paste copied data anywhere (email, notes, EMR).</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
 </div>
 
 <script>
-    (function() {
-        // ---------- TEMPLATE LIBRARY (exactly as provided) ----------
-        const templates = {
-    "Neck": `SUBJECTIVE: Patient presents with [] history of neck pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral upper extremity numbness 
-Bilateral upper extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Head Forward Posture 
-Antalgic Gait 
-
-Cervical AROM: 
-Restricted L/R Rotation:
-Restricted Side Flexion:
-Restricted Extension:
-Restricted Flexion: 
-
-C1-T1 Myotomes Unremarkable
-C1-T1 Dermatomes Unremarkable 
-C5/6 Reflexes: 
-C6/7 Reflexes: 
-Babinski:
-Clonus: 
-Hoffman's:
-
-Special Tests:
-Sharp-Purser:
-Alar Ligament:
-Spurling's:
-Slump:
-Cervical Flexion Rotation:
-Cervical Distraction:
-Upper Limb Tension Test:
-
-Cervical Isometrics:
-Painful and Strong L/R Rotation:
-Painful and Strong Side Flexion:
-Painful and Strong Extension:
-Painful and Strong Flexion:
-
-Grip Strength
-L:  kg
-R:  kg
-
-Palpation: 
-Sore levator scapulae:
-Sore upper trapezius:
-Sore C2-C7 paraspinals/facets:
-Sore suboccipital:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Neck Rotation []
-Deep Neck Flexion []
-Scapular Retraction +/- Band []
-Cervical Isometrics (Side Flexion, Flexion) []
-Wall Angel []
-
-Heat + TENs 80 us x 180 Hz x 5 minutes []
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes []
-Shockwave 1.0 Bar x 1000 reps []
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Low Back": `SUBJECTIVE: Patient presents with [] history of low back pain pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral lower extremity numbness 
-Bilateral lower extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Lumbar Lordosis
-Antalgic Gait 
-Bilateral Squat
-Unilateral Squat 
-Bilateral Hop
-Unilateral Hop
-
-Lumbar AROM: 
-Restricted Flexion:
-Restricted Extension:
-Restricted Side Flexion:
-Restricted Rotation: 
-
-L2-S2 Myotomes Unremarkable
-L2-S2 Dermatomes Unremarkable 
-L3/L4 Reflexes: 
-L5/S1 Reflexes: 
-Babinski:
-Clonus: 
-
-Special Tests:
-Flexion-Extension:
-Slump:
-Fitzgerald:
-FABER:
-FADDIR (Piriformis):
-Straight Leg Raise:
-Prone-Knee Bend:
-
-Palpation: 
-Sore L2-S2 paraspinals/facets:
-Sore Piriformis/Hip External Rotators:
-Sore Glute Max:
-Sore Glute Med/Hip Abductors:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Clam Shell
-Pelvic Tilt
-Bridge
-Mini-Squat
-Standing Hip Abduction
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Shoulder": `SUBJECTIVE: Patient presents with [] history of neck pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral upper extremity numbness 
-Bilateral upper extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Head Forward Posture 
-Antalgic Gait 
-
-Shoulder AROM: 
-Restricted Internal Rotation:
-Restricted External Rotation:
-Restricted Flexion:
-Restricted Abduction:
-Restricted Horizontal Adduction:
-Restricted Extension: 
-
-C1-T1 Myotomes Unremarkable
-C1-T1 Dermatomes Unremarkable 
-C5/6 Reflexes: 
-C6/7 Reflexes: 
-Babinski:
-Clonus: 
-Hoffman's:
-
-Special Tests:
-Hawkins-Kennedy Test:
-Lift-Off:
-Arm-Drop:
-Full Can:
-Empty Can:
-Scarf Test:
-Neer's Test:
-Speed's Test:
-Apprehension Test:
-O'Brien's Test:
-
-Shoulder Isometrics:
-Painful and Strong External Rotation:
-Painful and Strong Internal Rotation:
-Painful and Strong Abduction:
-Painful and Strong Adduction:
-Painful and Strong Flexion:
-Painful and Strong Extension:
-
-Grip Strength
-L:  kg
-R:  kg
-
-Palpation: 
-Sore supraspinatus tendon:
-Sore infraspinatus tendon:
-Sore deltoid:
-Sore acromion:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Pendulum
-External Rotation Isometrics
-Internal Rotation Isometrics
-Scapular Retraction +/- Band
-Wall-Push Up
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Elbow": `SUBJECTIVE: Patient presents with [] history of elbow pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral upper extremity numbness 
-Bilateral upper extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Head Forward Posture 
-
-C1-T1 Myotomes Unremarkable
-C1-T1 Dermatomes Unremarkable 
-C5/6 Reflexes: 
-C6/7 Reflexes: 
-Babinski:
-Clonus: 
-Hoffman's:
-
-Elbow AROM: 
-Restricted Flexion:
-Restricted Extension
-Restricted Supination:
-Restricted Pronation: 
-
-Special Tests:
-Valgus Stress Test:
-Varus Stress Test:
-Cozen's Test:
-Mill's Test:
-Tinel's
-
-Elbow Isometrics:
-Painful and Strong Flexion:
-Painful and Strong Extension:
-Painful and Strong Supination:
-Painful and Strong Pronation:
-
-Grip Strength
-L:  kg
-R:  kg
-
-Palpation: 
-Sore common extensor tendon:
-Sore common flexor tendon:
-Sore olecranon:
-Sore radial head:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Assisted Active Range of Motion
-Elbow Extension/Flexion Isometrics
-Supination/Pronation with Hammer
-Wrist Extension/Flexion Isotonics
-Wall-Push Up
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Wrist": `SUBJECTIVE: Patient presents with [] history of wrist pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral upper extremity numbness 
-Bilateral upper extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Head Forward Posture 
-
-C1-T1 Myotomes Unremarkable
-C1-T1 Dermatomes Unremarkable 
-C5/6 Reflexes: 
-C6/7 Reflexes: 
-Babinski:
-Clonus: 
-Hoffman's:
-
-Wrist AROM: 
-Restricted Flexion:
-Restricted Extension:
-Restricted Supination:
-Restricted Pronation: 
-Restricted Ulnar Deviation:
-Restricted Radial Deviation:
-
-Special Tests:
-Allen's Test:
-Lunoriquetral Balloment Test:
-Piano Test:
-Finklestein Test:
-Tinel's:
-Phalen's:
-Scaphoid Shift:
-Upper Limb Tension Test:
-
-Wrist Isometrics:
-Painful and Strong Flexion:
-Painful and Strong Extension:
-Painful and Strong Supination:
-Painful and Strong Pronation:
-Painful and Strong Ulnar Deviation:
-Painful and Strong Radial Deviation:
-
-Grip Strength
-L:  kg
-R:  kg
-
-Palpation: 
-Sore DRUJ and TFCC:
-Sore Carpal Tunnel:
-Sore Scapho-lunate:
-Sore Ulnar Styloid:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Assisted Active Range of Motion
-Wrist Extension/Flexion Isometrics
-Wrist Radial/Ulnar Deviation Isometrics
-Wrist Extension/Flexion Isotonics
-Finger Glides
-Wall-Push Up
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Hand/Fingers": `SUBJECTIVE: Patient presents with [] history of hand pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral upper extremity numbness 
-Bilateral upper extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Head Forward Posture 
-
-C1-T1 Myotomes Unremarkable
-C1-T1 Dermatomes Unremarkable 
-C5/6 Reflexes: 
-C6/7 Reflexes: 
-Babinski:
-Clonus: 
-Hoffman's:
-
-Finger AROM: 
-Restricted Flexion:
-Restricted Extension:
-Restricted Abduction:
-Restricted Adduction:
-Restricted Supination:
-Restricted Pronation: 
-Restricted Opposition:
-
-Special Tests:
-Allen's Test:
-Lunoriquetral Balloment Test:
-Piano Test:
-Finklestein Test:
-Tinel's:
-Phalen's:
-Lumbrical Shift Test:
-Scaphoid Shift:
-Upper Limb Tension Test:
-
-Finger/Pollicis Isometrics:
-Painful and Strong Flexion:
-Painful and Strong Extension:
-Painful and Strong Adduction:
-Painful and Strong Abduction:
-Painful and Strong Supination:
-Painful and Strong Pronation:
-Painful and Strong Opposition:
-
-Grip Strength
-L:  kg
-R:  kg
-
-Palpation: 
-Sore DRUJ and TFCC:
-Sore Carpal Tunnel:
-Sore Scapho-lunate:
-Sore Hook of Hamate:
-Sore Carpometacarpal:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Assisted Active Range of Motion
-Finger Extension/Flexion Isometrics
-Wrist Radial/Ulnar Deviation Isometrics
-Wrist Extension/Flexion Isotonics
-Finger Glides
-Wall-Push Up
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Hip & Groin": `SUBJECTIVE: Patient presents with [] history of hip pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral lower extremity numbness 
-Bilateral lower extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Lumbar Lordosis
-Antalgic Gait 
-Bilateral Squat
-Unilateral Squat 
-Bilateral Hop
-Unilateral Hop
-
-Hip AROM: 
-Restricted Flexion:
-Restricted Extension:
-Restricted Internal Rotation:
-Restricted External Rotation:
-Restricted Abduction:
-Restricted Adduction:
-
-Hip Isometrics:
-Painful and Strong Flexion:
-Painful and Strong Extension:
-Painful and Strong Rotation:
-Painful and Strong Rotation:
-Painful and Strong Abduction:
-Painful and Strong Adduction:
-
-L2-S2 Myotomes Unremarkable
-L2-S2 Dermatomes Unremarkable 
-L3/L4 Reflexes: 
-L5/S1 Reflexes: 
-Babinski:
-Clonus: 
-
-Special Tests:
-Flexion-Extension:
-Slump:
-Fitzgerald:
-FABER:
-FADDIR (Piriformis):
-Straight Leg Raise:
-FADER + Resistance:
-Resisted Hip Abduction:
-Thomas Test:
-Ober's Test:
-
-Palpation: 
-Sore L2-S2 paraspinals/facets:
-Sore Piriformis/Hip External Rotators:
-Sore Glute Max:
-Sore Glute Med/Hip Abductors:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Clam Shell
-Pelvic Tilt
-Bridge
-Mini-Squat
-Standing Hip Abduction
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Knee": `SUBJECTIVE: Patient presents with [] history of knee pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral lower extremity numbness 
-Bilateral lower extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Lumbar Lordosis
-Antalgic Gait 
-Bilateral Squat
-Unilateral Squat 
-Bilateral Hop
-Unilateral Hop
-
-L2-S2 Myotomes Unremarkable
-L2-S2 Dermatomes Unremarkable 
-L3/L4 Reflexes: 
-L5/S1 Reflexes: 
-Babinski:
-Clonus: 
-
-Knee AROM: 
-Restricted Flexion:
-Restricted Extension:
-
-Knee Isometrics (120-90-60 Degrees)
-Extension:
-Flexion:
-
-Special Tests:
-Thessaly's:
-Swipe Test:
-PCL/ACL/MCL/LCL Stress Tests:
-Nobel's Test:
-Retinaculum Test:
-Tinel's Test:
-Garrick's Test:
-Patellar Mobility: 
-
-Palpation: 
-Sore Tiobiofemoral Joint Line:
-Sore Patellofemoral:
-Sore Patellar/Quadriceps Tendons:
-Sore Vastus:
-Sore Semitendinosus/Biceps Femoris Tendons:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Straight Leg Raise/Knee Extension
-Hip Abduction
-Knee Flexion
-Spanish Squat
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Leg": `SUBJECTIVE: Patient presents with [] history of leg pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral lower extremity numbness 
-Bilateral lower extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Lumbar Lordosis
-Antalgic Gait 
-Bilateral Squat
-Unilateral Squat 
-Bilateral Hop
-Unilateral Hop
-
-L2-S2 Myotomes Unremarkable
-L2-S2 Dermatomes Unremarkable 
-L3/L4 Reflexes: 
-L5/S1 Reflexes: 
-Babinski:
-Clonus: 
-
-Ankle AROM: 
-Restricted Dorsiflexion:
-Restricted Plantarflexion:
-Restricted Inversion:
-Restricted Eversion:
-
-Ankle Isometrics: 
-Painful and Strong Dorsiflexion:
-Painful and Strong Plantarflexion:
-Painful and Strong Inversion:
-Painful and Strong Eversion:
-
-Special Tests:
-Fulcrum:
-Squeeze:
-Dorsiflexion + External Rotation:
-Tinel's:
-Anterior Drawer:
-Ligament Stress Tests (ATFL/CFL/PTFL):
-Ligament Stress Tests (ATTL/PTTL/TC/TN):
-
-Palpation: 
-Sore Tibial Crest:
-Sore Fibular Head:
-Sore Triceps Surae:
-Sore Anterolateral Muscles:
-Sore Sinus Tarsi:
-Sore Tarsal Tunnel:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Straight Leg Raise/Knee Extension
-Hip Abduction
-Knee Flexion
-Spanish Squat
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`,
-
-    "Foot": `SUBJECTIVE: Patient presents with [] history of foot pain, with [] radiating symptoms. 
-
-Functional & Social History:
-Medical History:
-
-Red Flags: 
-Bilateral lower extremity numbness 
-Bilateral lower extremity weakness 
-Bladder/Bowel dysfunction
-Night Sweats
-Weight Loss
-Loss of balance
-
-OBJECTIVE:
-Observation: 
-Lumbar Lordosis
-Antalgic Gait 
-Bilateral Squat
-Unilateral Squat 
-Bilateral Hop
-Unilateral Hop
-
-L2-S2 Myotomes Unremarkable
-L2-S2 Dermatomes Unremarkable 
-L3/L4 Reflexes: 
-L5/S1 Reflexes: 
-Babinski:
-Clonus: 
-
-Ankle/Toe AROM: 
-Restricted Dorsiflexion:
-Restricted Plantarflexion:
-Restricted Inversion:
-Restricted Eversion:
-Restricted Toe Flexion:
-Restricted Toe Extension:
-
-Ankle Isometrics: 
-Painful and Strong Dorsiflexion:
-Painful and Strong Plantarflexion:
-Painful and Strong Inversion:
-Painful and Strong Eversion:
-Painful and Strong Toe Flexion:
-Painful and Strong Toe Extension:
-
-Special Tests:
-Fulcrum:
-Squeeze:
-Thompson's:
-Tinel's:
-Anterior Drawer:
-Ligament Stress Tests (ATFL/CFL/PTFL):
-Ligament Stress Tests (ATTL/PTTL/TC/TN):
-Windlass Test:
-
-Palpation: 
-Sore Metatarsals:
-Sore Medial/Lateral Malleoli
-Sore Plantar Fascia:
-Sore Sinus Tarsi:
-Sore Tarsal Tunnel:
-
-ACTION
-Education: 
-Importance of exercising daily and activity modification
-See physician if symptoms worsen
-
-Exercises: 10 reps x 3 sets, 0/10 pain
-Straight Leg Raise/Knee Extension
-Hip Abduction
-Knee Flexion
-Spanish Squat
-
-Heat + TENs 80 us x 180 Hz x 5 minutes
-Ultrasound 3 MHz x 1.0 w/cm^2 x 50% duty cycle x 5 minutes
-Shockwave 1.0 Bar x 1000 reps
-
-RESPONSE: Tolerated session well, nil complaints.
-
-PLAN:
-1- Continue with activity modification and home exercise plan
-2- Refer to physician if symptoms worsen
-3- Follow up in 1-2 weeks
-
-Precautions Explained for Modalities and Exercises, Draping and Chaperone Offered: Yes
-Consent Obtained: Yes`
-};
-
-        // ----- DOM refs -----
-        const editor = document.getElementById('noteEditor');
-        const templateLabel = document.getElementById('templateLabel');
-        const copyBtn = document.getElementById('copyBtn');
-        const clearBtn = document.getElementById('clearBtn');
-
-        // ----- load template -----
-        function loadTemplate(region) {
-            const content = templates[region];
-            if (content) {
-                editor.value = content;
-                templateLabel.textContent = `📄 ${region} Assessment Note`;
-            } else {
-                editor.value = 'Template not found.';
-                templateLabel.textContent = '📄 Unknown region';
-            }
-            // auto-resize (optional)
-            editor.style.height = 'auto';
-            editor.style.height = editor.scrollHeight + 'px';
+  /***********************
+   * PROGRAM DATA
+   ***********************/
+  const PROGRAMS = {
+    minorInjury: {
+      meta: { title: 'Minor Injury Program', weeks: 3 },
+      weeks: {
+        1: [
+          { label: 'Day 1', total: 10, run: 1, walk: 1 },
+          { label: 'Day 2', total: 15, run: 1, walk: 1 },
+          { label: 'Day 3', total: 20, run: 1, walk: 1 },
+          { label: 'Day 4', total: 25, run: 1, walk: 1 },
+          { label: 'Day 5', total: 30, run: 1, walk: 1 }
+        ],
+        2: [
+          { label: 'Day 1', total: 20, run: 2, walk: 1 },
+          { label: 'Day 2', total: 30, run: 2, walk: 1 },
+          { label: 'Day 3', total: 20, run: 3, walk: 1 },
+          { label: 'Day 4', total: 30, run: 3, walk: 1 },
+          { label: 'Day 5', total: 20, run: 4, walk: 1 }
+        ],
+        3: [
+          { label: 'Day 1', total: 30, run: 4, walk: 1 },
+          { label: 'Day 2', total: 20, run: 9, walk: 1 },
+          { label: 'Day 3', total: 30, run: 9, walk: 1 },
+          { label: 'Day 4', total: 30, run: 14, walk: 1 },
+          { label: 'Day 5', total: 30, run: 30, walk: 0 }
+        ]
+      }
+    },
+
+    eliteAthlete: {
+      meta: { title: 'Elite Athlete Program', weeks: 2 },
+      weeks: {
+        1: [
+          { label: 'Day 1', total: 10, run: 1, walk: 1 },
+          { label: 'Day 2', total: 15, run: 2, walk: 1 },
+          { label: 'Day 3', total: 20, run: 3, walk: 1 },
+          { label: 'Day 4', total: 25, run: 4, walk: 1 },
+          { label: 'Day 5', total: 30, run: 9, walk: 1 }
+        ],
+        2: [
+          { label: 'Day 1', total: 35, run: 9, walk: 1 },
+          { label: 'Day 2', total: 45, run: 14, walk: 1 },
+          { label: 'Day 3', total: 20, run: 20, walk: 0 },
+          { label: 'Day 4', total: 50, run: 9, walk: 1 },
+          { label: 'Day 5', total: 60, run: 14, walk: 1 }
+        ]
+      }
+    },
+
+    majorInjury: {
+      meta: { title: 'Major Injury Program', weeks: 8 },
+      weeks: {
+        1: [{ label: 'Day 1', total: 6, run: 1, walk: 1 }, { label: 'Day 2', total: 8, run: 1, walk: 1 }, { label: 'Day 3', total: 10, run: 1, walk: 1 }, { label: 'Day 4', total: 12, run: 1, walk: 1 }, { label: 'Day 5', total: 14, run: 1, walk: 1 }],
+        2: [{ label: 'Day 1', total: 16, run: 1, walk: 1 }, { label: 'Day 2', total: 18, run: 1, walk: 1 }, { label: 'Day 3', total: 20, run: 1, walk: 1 }, { label: 'Day 4', total: 22, run: 1, walk: 1 }, { label: 'Day 5', total: 24, run: 1, walk: 1 }],
+        3: [{ label: 'Day 1', total: 26, run: 1, walk: 1 }, { label: 'Day 2', total: 28, run: 1, walk: 1 }, { label: 'Day 3', total: 30, run: 1, walk: 1 }, { label: 'Day 4', total: 9, run: 2, walk: 1 }, { label: 'Day 5', total: 12, run: 2, walk: 1 }],
+        4: [{ label: 'Day 1', total: 15, run: 2, walk: 1 }, { label: 'Day 2', total: 18, run: 2, walk: 1 }, { label: 'Day 3', total: 21, run: 2, walk: 1 }, { label: 'Day 4', total: 24, run: 2, walk: 1 }, { label: 'Day 5', total: 27, run: 2, walk: 1 }],
+        5: [{ label: 'Day 1', total: 30, run: 2, walk: 1 }, { label: 'Day 2', total: 12, run: 3, walk: 1 }, { label: 'Day 3', total: 16, run: 3, walk: 1 }, { label: 'Day 4', total: 20, run: 3, walk: 1 }, { label: 'Day 5', total: 24, run: 3, walk: 1 }],
+        6: [{ label: 'Day 1', total: 28, run: 3, walk: 1 }, { label: 'Day 2', total: 32, run: 3, walk: 1 }, { label: 'Day 3', total: 10, run: 4, walk: 1 }, { label: 'Day 4', total: 15, run: 4, walk: 1 }, { label: 'Day 5', total: 20, run: 4, walk: 1 }],
+        7: [{ label: 'Day 1', total: 25, run: 4, walk: 1 }, { label: 'Day 2', total: 30, run: 4, walk: 1 }, { label: 'Day 3', total: 10, run: 9, walk: 1 }, { label: 'Day 4', total: 20, run: 9, walk: 1 }, { label: 'Day 5', total: 30, run: 9, walk: 1 }],
+        8: [{ label: 'Day 1', total: 15, run: 14, walk: 1 }, { label: 'Day 2', total: 30, run: 14, walk: 1 }, { label: 'Day 3', total: 20, run: 20, walk: 0 }, { label: 'Day 4', total: 25, run: 25, walk: 0 }, { label: 'Day 5', total: 30, run: 30, walk: 0 }]
+      }
+    }
+  };
+
+  /***********************
+   * HELPERS
+   ***********************/
+  function calculateReps(total, run, walk) {
+    const seg = run + walk;
+    if (seg <= 0) return '—';
+    if (walk === 0) return '1';
+    return Math.floor(total / seg);
+  }
+
+  // generate plain-text program representation
+  function getProgramText(key) {
+    const program = PROGRAMS[key];
+    if (!program) return 'No program loaded.';
+    const { title, weeks: totalWeeks } = program.meta;
+    let lines = [];
+    lines.push(`${title} (${totalWeeks} weeks)`);
+    lines.push('─'.repeat(40));
+
+    for (let wk = 1; wk <= totalWeeks; wk++) {
+      const weekData = program.weeks[wk] || [];
+      lines.push(`\nWEEK ${wk}`);
+      if (weekData.length === 0) {
+        lines.push('  (no structured days)');
+        continue;
+      }
+      weekData.forEach(r => {
+        const runWalk = r.walk === 0 ? `${r.run} min continuous` : `Run ${r.run} · Walk ${r.walk}`;
+        const reps = calculateReps(r.total, r.run, r.walk);
+        lines.push(`  ${r.label.padEnd(6)}  ${r.total} min  ${runWalk.padEnd(18)}  reps: ${reps}`);
+      });
+    }
+    return lines.join('\n');
+  }
+
+  /***********************
+   * RENDER
+   ***********************/
+  const showBtn = document.getElementById('showBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const profileSelect = document.getElementById('profile');
+  const progContent = document.getElementById('progContent');
+  const progTitle = document.getElementById('progTitle');
+  const progSubtitle = document.getElementById('progSubtitle');
+  const weeksCount = document.getElementById('weeksCount');
+
+  let currentProgramKey = 'minorInjury';
+
+  function resetAll() {
+    profileSelect.value = 'minorInjury';
+    currentProgramKey = 'minorInjury';
+    progTitle.textContent = 'Select a profile';
+    progSubtitle.textContent = 'Programs displayed as expandable weeks — click a week to view daily intervals.';
+    weeksCount.textContent = '—';
+    progContent.innerHTML = '<div class="empty-state">No program loaded. Click <strong>Show Program</strong> to preview.</div>';
+    // clear feedback
+    document.getElementById('copyFeedback').textContent = '';
+  }
+
+  function renderProgram(key) {
+    const program = PROGRAMS[key];
+    if (!program) return;
+    currentProgramKey = key;
+    const { title, weeks: totalWeeks } = program.meta;
+
+    progTitle.textContent = title;
+    progSubtitle.textContent = `This program contains ${totalWeeks} structured week${totalWeeks > 1 ? 's' : ''}. Expand a week to view daily intervals.`;
+    weeksCount.textContent = `${totalWeeks} wk${totalWeeks > 1 ? 's' : ''}`;
+
+    progContent.innerHTML = '';
+
+    for (let wk = 1; wk <= totalWeeks; wk++) {
+      const weekData = program.weeks[wk] || [];
+      const progDiv = document.createElement('div');
+      progDiv.className = 'prog';
+
+      const head = document.createElement('div');
+      head.className = 'head';
+      head.innerHTML = `<h3>Week ${wk}</h3><div class="chev">›</div>`;
+      head.dataset.week = wk;
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      body.id = `week-body-${wk}`;
+
+      let tableHtml = `<div class="week-block"><h4>Week ${wk} · daily intervals</h4><table><thead><tr><th>Day</th><th>Total</th><th>Run / Walk</th><th>Reps</th></tr></thead><tbody>`;
+      if (weekData.length === 0) {
+        tableHtml += `<tr><td colspan="4" class="empty-state" style="padding:0.5rem 0;color:#6a7e96;">No structured days.</td></tr>`;
+      } else {
+        weekData.forEach(r => {
+          const runWalk = r.walk === 0 ? `${r.run} min continuous` : `Run ${r.run} · Walk ${r.walk}`;
+          const reps = calculateReps(r.total, r.run, r.walk);
+          tableHtml += `<tr><td class="day-label">${r.label}</td><td>${r.total} min</td><td><span class="badge-runwalk">${runWalk}</span></td><td>${reps}</td></tr>`;
+        });
+      }
+      tableHtml += `</tbody></table></div>`;
+      body.innerHTML = tableHtml;
+
+      progDiv.appendChild(head);
+      progDiv.appendChild(body);
+      progContent.appendChild(progDiv);
+
+      head.addEventListener('click', function () {
+        const isOpen = progDiv.classList.contains('open');
+        document.querySelectorAll('.prog').forEach(p => {
+          p.classList.remove('open');
+          p.querySelector('.body').style.display = 'none';
+        });
+        if (!isOpen) {
+          progDiv.classList.add('open');
+          progDiv.querySelector('.body').style.display = 'block';
+          setTimeout(() => progDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
         }
+      });
+    }
+  }
 
-        // ----- event listeners for preset buttons -----
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const region = this.dataset.region;
-                loadTemplate(region);
-                // highlight active? (optional)
-                document.querySelectorAll('.preset-btn').forEach(b => b.style.background = 'white');
-                this.style.background = '#e1ecfe';
-                setTimeout(() => { this.style.background = 'white'; }, 400);
-            });
-        });
+  /***********************
+   * COPY & FEEDBACK
+   ***********************/
+  const copyFeedback = document.getElementById('copyFeedback');
+  const notesInput = document.getElementById('notesInput');
 
-        // ----- clear button -----
-        clearBtn.addEventListener('click', function() {
-            editor.value = '';
-            templateLabel.textContent = '📄 (empty)';
-            editor.style.height = 'auto';
-        });
+  function showFeedback(msg, isSuccess = true) {
+    copyFeedback.textContent = msg;
+    copyFeedback.className = 'copy-feedback' + (isSuccess ? ' success' : '');
+    setTimeout(() => {
+      copyFeedback.textContent = '';
+      copyFeedback.className = 'copy-feedback';
+    }, 4000);
+  }
 
-        // ----- copy button -----
-        copyBtn.addEventListener('click', function() {
-            const text = editor.value;
-            if (!text.trim()) {
-                alert('Nothing to copy — the note is empty.');
-                return;
-            }
-            navigator.clipboard.writeText(text).then(() => {
-                const original = copyBtn.textContent;
-                copyBtn.textContent = '✅ Copied!';
-                setTimeout(() => { copyBtn.textContent = original; }, 2000);
-            }).catch(() => {
-                // fallback
-                editor.select();
-                document.execCommand('copy');
-                const original = copyBtn.textContent;
-                copyBtn.textContent = '✅ Copied!';
-                setTimeout(() => { copyBtn.textContent = original; }, 2000);
-            });
-        });
+  function copyToClipboard(text) {
+    if (!navigator.clipboard) {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showFeedback('✓ Copied!', true);
+      } catch (e) {
+        showFeedback('❌ Copy failed', false);
+      }
+      document.body.removeChild(ta);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      showFeedback('✓ Copied!', true);
+    }).catch(() => {
+      showFeedback('❌ Copy failed', false);
+    });
+  }
 
-        // optional: load first template as demo
-        loadTemplate('Neck');
-    })();
+  document.getElementById('copyProgramBtn').addEventListener('click', function () {
+    const key = currentProgramKey || profileSelect.value;
+    const txt = getProgramText(key);
+    copyToClipboard(txt);
+  });
+
+  document.getElementById('copyNotesBtn').addEventListener('click', function () {
+    const notes = notesInput.value.trim();
+    if (!notes) {
+      showFeedback('✎ Notes are empty', false);
+      return;
+    }
+    copyToClipboard(notes);
+  });
+
+  /***********************
+   * EVENT LISTENERS
+   ***********************/
+  showBtn.addEventListener('click', () => {
+    const key = profileSelect.value;
+    renderProgram(key);
+  });
+
+  resetBtn.addEventListener('click', resetAll);
+
+  profileSelect.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') renderProgram(profileSelect.value);
+  });
+
+  // init
+  resetAll();
 </script>
 </body>
 </html>
