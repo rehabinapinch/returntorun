@@ -1,1302 +1,1055 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rehab Monitoring Visual</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Run/Walk Program Selector · Professional</title>
   <style>
-    :root {
-      --ink:        #1f2933;
-      --ink-soft:   #52606d;
-      --ink-mute:   #7b8794;
-      --line:       #d9dee3;
-      --line-soft:  #eef1f4;
-      --surface:    #ffffff;
-      --surface-2:  #f7f9fb;
-      --surface-3:  #eef2f6;
-      --bg:         #f2f4f7;
-
-      --accent:     #3d6b8c;
-      --accent-hover:#325a77;
-      --accent-soft:#eaf0f5;
-
-      --danger:     #9b4444;
-      --danger-hover:#833939;
-      --danger-soft:#f7eded;
-
-      --ok:         #4a7c59;
-
-      --radius:     6px;
-      --radius-lg:  10px;
-      --shadow-sm:  0 1px 2px rgba(31,41,51,0.04);
-      --shadow-md:  0 2px 6px rgba(31,41,51,0.06);
-      --shadow-lg:  0 8px 24px rgba(31,41,51,0.08);
-
-      --chart-min-h: 260px;
-      --chart-ideal-h: 42vh;
-      --chart-max-h: 520px;
+    /* reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body { height: 100%; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 14px;
-      color: var(--ink);
-      background: var(--bg);
+      background: #f5f9fe;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 2rem 1.5rem;
+      color: #1a2639;
       line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
     }
 
-    /* ---------- App shell ---------- */
-    .app {
-      max-width: 1400px;
+    .container {
+      max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--line);
     }
 
-    /* ---------- Header ---------- */
+    /* header */
     .app-header {
-      padding: 16px 22px;
-      border-bottom: 1px solid var(--line);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
       flex-wrap: wrap;
-      background: var(--surface);
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     .brand h1 {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--ink);
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0b2a3c;
+      margin: 0;
+      line-height: 1.2;
     }
 
-    .brand p {
-      font-size: 12.5px;
-      color: var(--ink-mute);
-      margin-top: 2px;
+    .brand .sub {
+      font-size: 0.85rem;
+      color: #4b5f73;
+      margin-top: 0.15rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
     }
 
-    /* ---------- Summary strip ---------- */
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1px;
-      background: var(--line-soft);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .summary-cell {
-      background: var(--surface);
-      padding: 12px 18px;
+    .controls {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.6rem 0.9rem;
     }
 
-    .summary-cell .label {
-      font-size: 10.5px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-mute);
+    .controls .field-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      padding: 0.25rem 0.25rem 0.25rem 0.9rem;
+      border-radius: 60px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.03);
     }
 
-    .summary-cell .value {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .summary-cell .value small {
-      font-size: 11.5px;
+    .controls label {
+      font-size: 0.8rem;
       font-weight: 500;
-      color: var(--ink-mute);
-      margin-left: 4px;
-      letter-spacing: 0;
-    }
-
-    /* ---------- Main layout ---------- */
-    .layout {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* Side-by-side only on very wide screens */
-    @media (min-width: 1400px) {
-      .layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      }
-      .layout > .panel + .panel {
-        border-left: 1px solid var(--line);
-      }
-    }
-
-    .panel {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      background: var(--surface);
-    }
-
-    .layout > .panel + .panel {
-      border-top: 1px solid var(--line);
-    }
-
-    @media (min-width: 1400px) {
-      .layout > .panel + .panel { border-top: none; }
-    }
-
-    .panel-head {
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--line-soft);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: var(--surface-2);
-    }
-
-    .panel-head h2 {
-      font-size: 12px;
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      color: #4b5f73;
     }
 
-    .panel-head-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
+    .controls select {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #0b2a3c;
+      border-radius: 60px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234b5f73' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
+      background-size: 12px 8px;
     }
 
-    .panel-body {
-      padding: 14px 20px 18px;
+    .controls select:hover {
+      background-color: rgba(0, 0, 0, 0.01);
     }
 
-    .panel-foot {
-      padding: 12px 20px;
-      border-top: 1px solid var(--line-soft);
-      background: var(--surface-2);
-    }
-
-    /* ---------- Buttons ---------- */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 7px 12px;
-      font-family: inherit;
-      font-size: 12.5px;
+      border: none;
+      background: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
       font-weight: 500;
-      letter-spacing: 0.01em;
-      border-radius: var(--radius);
-      border: 1px solid transparent;
+      color: #1a2639;
       cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-      white-space: nowrap;
-      line-height: 1.3;
-      background: var(--surface);
-      color: var(--ink);
-    }
-
-    .btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.04);
+      letter-spacing: 0.01em;
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-    }
-    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-
-    .btn-secondary {
-      background: var(--surface);
-      color: var(--ink-soft);
-      border-color: var(--line);
-    }
-    .btn-secondary:hover {
-      background: var(--surface-2);
-      color: var(--ink);
-      border-color: #c4cbd2;
+      background: #1e3d5e;
+      color: white;
+      box-shadow: 0 4px 12px rgba(26, 58, 87, 0.15);
+      border: 1px solid transparent;
     }
 
-    .btn-danger {
-      background: var(--surface);
-      color: var(--danger);
-      border-color: var(--line);
-    }
-    .btn-danger:hover {
-      background: var(--danger-soft);
-      border-color: #e3c9c9;
-      color: var(--danger-hover);
+    .btn-primary:hover {
+      background: #16324d;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(26, 58, 87, 0.20);
     }
 
-    .btn-ghost {
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline {
       background: transparent;
-      color: var(--ink-mute);
-      border-color: transparent;
-    }
-    .btn-ghost:hover {
-      background: var(--surface-3);
-      color: var(--ink-soft);
+      box-shadow: none;
+      border: 1px solid #d0d9e6;
+      color: #2c4058;
     }
 
-    .btn-sm { padding: 4px 9px; font-size: 11.5px; }
-    .btn-block { width: 100%; }
+    .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: #b0bfd0;
+    }
 
-    /* ---------- Onboarding ---------- */
-    .onboarding {
-      display: none;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      background: var(--accent-soft);
-      border: 1px solid #d6e2ec;
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      font-size: 12.5px;
-      color: var(--ink-soft);
+    /* main grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* card */
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem 1.75rem 2rem;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04), 0 2px 10px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: box-shadow 0.2s;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #0b2a3c;
+      margin: 0;
+    }
+
+    .card-header .meta-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4b5f73;
+      background: #f1f5fa;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-header .meta-tag span {
+      background: white;
+      padding: 0.05rem 0.6rem;
+      border-radius: 40px;
+      color: #0b2a3c;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #4b5f73;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #ecf0f5;
+    }
+
+    /* program list */
+    .prog {
+      border-radius: 16px;
+      border: 1px solid #e7edf5;
+      background: white;
+      overflow: hidden;
+      transition: border-color 0.15s;
+      margin-bottom: 0.75rem;
+    }
+
+    .prog:hover {
+      border-color: #cbd8e9;
+    }
+
+    .prog .head {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .onboarding strong { color: var(--ink); font-weight: 600; }
-    .onboarding-actions { display: flex; gap: 6px; }
-
-    /* ---------- Week bins ---------- */
-    .week-bin {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      margin-bottom: 6px;
-      background: var(--surface);
-      overflow: hidden;
-    }
-
-    .week-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
+      padding: 0.9rem 1.25rem;
+      background: #fafcff;
       cursor: pointer;
+      transition: background 0.1s;
       user-select: none;
-      background: var(--surface-2);
-      transition: background 0.15s ease;
     }
-    .week-header:hover { background: var(--surface-3); }
 
-    .week-caret {
-      font-size: 9px;
-      color: var(--ink-mute);
-      transition: transform 0.18s ease;
-      display: inline-block;
-      width: 10px;
-      text-align: center;
+    .prog .head:hover {
+      background: #f2f7ff;
     }
-    .week-bin.open .week-caret { transform: rotate(90deg); }
 
-    .week-label {
-      font-size: 12.5px;
+    .prog .head h3 {
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--ink);
+      color: #1a3b57;
+      letter-spacing: -0.01em;
+      margin: 0;
     }
 
-    .week-meta {
-      margin-left: auto;
+    .chev {
       display: flex;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--ink-mute);
-      font-variant-numeric: tabular-nums;
-    }
-    .week-meta .dot { opacity: 0.5; }
-
-    .week-body {
-      display: none;
-      border-top: 1px solid var(--line-soft);
-      background: var(--surface);
-    }
-    .week-bin.open .week-body { display: block; }
-
-    /* ---------- Compact session rows ---------- */
-    .session-row {
-      display: grid;
-      grid-template-columns: 64px 1fr 72px 72px 30px;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border-bottom: 1px solid var(--line-soft);
-      font-size: 12.5px;
-      cursor: pointer;
-      transition: background 0.12s ease;
-    }
-    .session-row:last-child { border-bottom: none; }
-    .session-row:hover { background: var(--surface-2); }
-    .session-row.open { background: var(--surface-2); }
-
-    .session-row .date-cell {
-      font-weight: 600;
-      color: var(--ink-soft);
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-      font-size: 12px;
-    }
-
-    .session-row .activity-cell {
-      color: var(--ink);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .session-row .activity-cell.empty { color: var(--ink-mute); font-style: italic; }
-
-    .pill {
-      display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 30px;
-      padding: 2px 7px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-      color: #fff;
-      line-height: 1.4;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e7edf5;
+      color: #3f5c7a;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.1), background 0.15s;
+      line-height: 1;
     }
 
-    .pill.intensity {
-      background: var(--accent);
+    .prog.open .chev {
+      transform: rotate(90deg);
+      background: #eef5fd;
+      border-color: #b6cce2;
     }
 
-    .pill.pain {
-      /* color is set inline from heatmap */
-    }
-
-    .row-caret {
-      font-size: 9px;
-      color: var(--ink-mute);
-      text-align: center;
-      transition: transform 0.15s ease;
-    }
-    .session-row.open .row-caret { transform: rotate(90deg); }
-
-    /* ---------- Expanded edit form ---------- */
-    .session-edit {
+    .prog .body {
+      padding: 0.25rem 1.25rem 1.5rem;
+      background: #fafdff;
       display: none;
-      padding: 10px 12px 12px;
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--line-soft);
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-    }
-    .session-edit.open { display: grid; }
-
-    .session-edit .field {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      border-top: 1px solid #eef3fa;
     }
 
-    .session-edit .field label {
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--ink-mute);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .session-edit .field input {
-      font-family: inherit;
-      font-size: 13px;
-      color: var(--ink);
-      padding: 5px 8px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      width: 100%;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .session-edit .field input:hover { border-color: #c4cbd2; }
-    .session-edit .field input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(61,107,140,0.12);
-    }
-
-    .session-edit .edit-actions {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: flex-end;
-      gap: 6px;
-      padding-top: 2px;
-    }
-
-    /* ---------- Empty state ---------- */
-    .empty {
-      padding: 32px 20px;
-      text-align: center;
-      color: var(--ink-mute);
-      font-size: 13px;
-    }
-
-    /* ---------- Chart panel ---------- */
-    .chart-wrap {
-      position: relative;
-      width: 100%;
-      height: clamp(var(--chart-min-h), var(--chart-ideal-h), var(--chart-max-h));
-      padding: 4px 0;
-    }
-
-    canvas#rehabChart {
-      width: 100% !important;
-      height: 100% !important;
+    .prog.open .body {
       display: block;
     }
 
-    .chart-placeholder {
+    /* week table */
+    .week-block {
+      margin-top: 0.25rem;
+    }
+
+    .week-block h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #29445e;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin: 0 0 0.6rem 0;
+      opacity: 0.7;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: #3a5775;
+      padding: 0.4rem 0.3rem 0.4rem 0;
+      border-bottom: 1px solid #e1e9f2;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 0.5rem 0.3rem 0.5rem 0;
+      border-bottom: 1px solid #ecf1f8;
+      color: #1d3349;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .day-label {
+      font-weight: 500;
+      color: #0b2a3c;
+    }
+
+    .badge-runwalk {
+      background: #eef4fa;
+      padding: 0.15rem 0.6rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1e3d5e;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      color: #6a7e96;
+      font-size: 0.95rem;
+      padding: 0.5rem 0;
+    }
+
+    .empty-state strong {
+      color: #1a3b57;
+      font-weight: 600;
+    }
+
+    /* scrollable list */
+    .prog-list-wrapper {
+      max-height: 65vh;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-track {
+      background: #f0f4fa;
+      border-radius: 10px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-thumb {
+      background: #cbd8e9;
+      border-radius: 10px;
+    }
+
+    .prog-list-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #b0c2d8;
+    }
+
+    /* sidebar — notes & copy */
+    .sidebar-card {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 32px 24px;
-      min-height: 200px;
-      color: var(--ink-mute);
+      gap: 1.25rem;
     }
 
-    .chart-placeholder .glyph {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--surface-3);
-      color: var(--ink-soft);
+    .notes-area {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .notes-area label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1a3b57;
+      letter-spacing: 0.01em;
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      font-size: 16px;
+      gap: 0.4rem;
     }
 
-    .chart-placeholder h3 {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--ink-soft);
-      margin-bottom: 4px;
+    .notes-area textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 0.9rem 1rem;
+      border: 1px solid #dbe3ed;
+      border-radius: 14px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #1a2639;
+      background: #fafdff;
+      resize: vertical;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .chart-placeholder p {
-      font-size: 12.5px;
-      max-width: 320px;
-      line-height: 1.5;
+    .notes-area textarea:focus {
+      outline: none;
+      border-color: #7f9bbf;
+      box-shadow: 0 0 0 3px rgba(30, 61, 94, 0.08);
     }
 
-    /* ---------- Legend ---------- */
-    .legend {
-      padding: 10px 20px 14px;
-      border-top: 1px solid var(--line-soft);
+    .copy-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .copy-section .copy-actions {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: var(--ink-mute);
+      gap: 0.5rem;
     }
 
-    .legend-title {
-      font-weight: 600;
-      color: var(--ink-soft);
-      margin-right: 4px;
-      letter-spacing: 0.03em;
-    }
-
-    .legend-item {
+    .btn-copy {
+      background: white;
+      border: 1px solid #d0d9e6;
+      padding: 0.45rem 1.1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1e3d5e;
+      cursor: pointer;
+      transition: all 0.15s;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 0.4rem;
     }
 
-    .swatch {
-      width: 11px;
-      height: 11px;
-      border-radius: 3px;
-      border: 1px solid rgba(0,0,0,0.05);
+    .btn-copy:hover {
+      background: #eef5fd;
+      border-color: #b0c5de;
     }
 
-    /* ---------- Action bar ---------- */
-    .action-bar {
-      padding: 12px 20px;
-      background: var(--surface-2);
-      border-top: 1px solid var(--line);
+    .btn-copy:active {
+      transform: scale(0.97);
+    }
+
+    .copy-feedback {
+      font-size: 0.8rem;
+      color: #4b6f8a;
+      min-height: 1.4em;
+      margin-top: 0.1rem;
+    }
+
+    .copy-feedback.success {
+      color: #1d7a4f;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e7edf5;
+      margin: 0.2rem 0 0.6rem;
+    }
+
+    /* --- VISUALIZER STYLES (week-relative ratio) --- */
+    .viz-container {
+      margin-top: 0.5rem;
+      background: #fafdff;
+      border-radius: 14px;
+      padding: 0.75rem 0.5rem 0.25rem;
+      border: 1px solid #e7edf5;
+      min-height: 120px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .viz-row {
+      display: flex;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 6px;
+      width: 100%;
     }
 
-    .action-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .viz-day-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #3a5775;
+      width: 32px;
+      flex-shrink: 0;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
 
-    /* ---------- Toast ---------- */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translate(-50%, 20px);
-      background: var(--ink);
-      color: #fff;
-      padding: 9px 16px;
-      border-radius: var(--radius);
-      font-size: 12.5px;
+    .viz-ratio-bar {
+      display: flex;
+      height: 18px;
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #ecf1f8;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .viz-ratio-run {
+      background: #1e3d5e;
+      height: 100%;
+      transition: width 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 4px;
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .viz-ratio-walk {
+      background: #a8c4e0;
+      height: 100%;
+      transition: width 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 4px;
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: #1a3b57;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .viz-no-data {
+      font-size: 0.8rem;
+      color: #6a7e96;
+      padding: 1.5rem 0.5rem;
+      text-align: center;
+    }
+
+    .viz-legend-ratio {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+      color: #3a5775;
       font-weight: 500;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      z-index: 1000;
     }
-    .toast.show { opacity: 1; transform: translate(-50%, 0); }
-    .toast.ok { background: var(--ok); }
-    .toast.err { background: var(--danger); }
 
-    @media print {
-      .action-bar, .btn, .row-caret, .app-header button { display: none !important; }
-      .app { box-shadow: none; border: none; }
-      .week-body { display: block !important; }
-      .session-edit { display: none !important; }
+    .viz-legend-ratio span::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .viz-legend-ratio .legend-run::before {
+      background: #1e3d5e;
+    }
+
+    .viz-legend-ratio .legend-walk::before {
+      background: #a8c4e0;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem 0.75rem;
+      }
+
+      .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .controls {
+        flex-wrap: wrap;
+      }
+
+      .controls .field-group {
+        flex: 1;
+        min-width: 180px;
+        border-radius: 40px;
+      }
+
+      .card {
+        padding: 1.25rem 1rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .prog .head {
+        padding: 0.75rem 1rem;
+      }
+
+      .prog .body {
+        padding: 0.25rem 1rem 1.25rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .viz-day-label {
+        width: 26px;
+        font-size: 0.55rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header class="app-header">
-      <div class="brand">
-        <h1>Rehab Monitoring Visual: Track Recovery & Progress Across Sessions</h1>
-        <p>App created by <a href="https://www.linkedin.com/in/runrehabpro/" target="_blank" style="color:#1e3d5e;text-decoration:none;font-weight:500;">Walden Cheung PT, MSc</a></p>
-      </div>
-      <button class="btn btn-secondary btn-sm" onclick="exportData()">Export CSV</button>
-    </header>
-
-    <!-- Summary strip -->
-    <div class="summary" id="summary">
-      <div class="summary-cell">
-        <span class="label">Sessions</span>
-        <span class="value" id="sumSessions">0</span>
-      </div>
-      <div class="summary-cell">
-        <span class="label">Date range</span>
-        <span class="value" id="sumRange" style="font-size:13px;">—</span>
-      </div>
-      <div class="summary-cell">
-        <span class="label">Avg intensity</span>
-        <span class="value" id="sumInt">—</span>
-      </div>
-      <div class="summary-cell">
-        <span class="label">Avg pain</span>
-        <span class="value" id="sumPain">—</span>
-      </div>
-      <div class="summary-cell">
-        <span class="label">Latest pain</span>
-        <span class="value" id="sumLatest">—</span>
-      </div>
+<div class="container">
+  <!-- header -->
+  <header class="app-header">
+    <div class="brand">
+      <h1>Return-to-Running · Program Selector</h1>
+      <div class="sub">App created by <a href="https://www.linkedin.com/in/runrehabpro/" target="_blank" style="color:#1e3d5e;text-decoration:none;font-weight:500;">Walden Cheung PT, MSc</a> · Programs: The Running Clinic &amp; Blaise Dubois PT</div>
+      <div class="sub" style="margin-top:0.25rem;opacity:0.7;font-size:0.8rem;">Select profile → Show Program → expand weeks to view intervals. Use notes &amp; copy below.</div>
     </div>
-
-    <div class="layout">
-      <!-- Left: Session log -->
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Session Log</h2>
-          <div class="panel-head-actions">
-            <button class="btn btn-ghost btn-sm" onclick="toggleAllWeeks(true)">Expand all</button>
-            <button class="btn btn-ghost btn-sm" onclick="toggleAllWeeks(false)">Collapse all</button>
-          </div>
-        </div>
-
-        <div class="panel-body">
-          <div class="onboarding" id="onboarding">
-            <div><strong>New here?</strong> Load a sample recovery timeline to see how the chart works.</div>
-            <div class="onboarding-actions">
-              <button class="btn btn-primary btn-sm" onclick="loadSampleData(true)">Load Sample</button>
-              <button class="btn btn-ghost btn-sm" onclick="dismissOnboarding()">Dismiss</button>
-            </div>
-          </div>
-          <div id="sessionList"></div>
-        </div>
-
-        <div class="panel-foot">
-          <button class="btn btn-secondary btn-block" onclick="addSession()">Add Session</button>
-        </div>
-      </section>
-
-      <!-- Right: Chart -->
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Progress Chart</h2>
-          <div class="panel-head-actions">
-            <button class="btn btn-ghost btn-sm" id="closeChartBtn" onclick="hideChart()" style="display:none;">Clear</button>
-          </div>
-        </div>
-
-        <div class="panel-body" style="padding-top:16px;">
-          <div class="chart-placeholder" id="chartPlaceholder">
-            <div class="glyph">—</div>
-            <h3>No chart yet</h3>
-            <p>Add sessions and generate the chart to see intensity over time, with pain levels shown as colored points.</p>
-          </div>
-
-          <div class="chart-wrap" id="chartWrap" style="display:none;">
-            <canvas id="rehabChart"></canvas>
-          </div>
-        </div>
-
-        <div class="legend" id="legend"></div>
-      </section>
-    </div>
-
-    <div class="action-bar">
-      <div class="action-group">
-        <button class="btn btn-primary" onclick="generateGraph()">Generate Chart</button>
-        <button class="btn btn-secondary" onclick="clearAllSessions()">Clear All</button>
+    <div class="controls">
+      <div class="field-group">
+        <label for="profile">Profile</label>
+        <select id="profile">
+          <option value="minorInjury">Minor Injury (≈3 wk)</option>
+          <option value="majorInjury">Major Injury (≈8 wk)</option>
+          <option value="eliteAthlete">Elite Athlete (2 wk)</option>
+        </select>
       </div>
-      <div class="action-group">
-        <button class="btn btn-secondary" onclick="loadSampleData(false)">Load Sample Data</button>
-        <button class="btn btn-danger" onclick="restart()">Restart</button>
-      </div>
+      <button class="btn btn-primary" id="showBtn">Show Program</button>
+      <button class="btn btn-outline" id="resetBtn">Reset</button>
     </div>
+  </header>
+
+  <!-- main grid: program + sidebar -->
+  <div class="grid">
+    <!-- main program card -->
+    <section class="card" id="programPanel">
+      <div class="card-header">
+        <h2 id="progTitle">Select a profile</h2>
+        <div class="meta-tag" id="weeksCount">—</div>
+      </div>
+      <div class="subtitle" id="progSubtitle">Programs displayed as expandable weeks — click a week to view daily intervals.</div>
+
+      <div class="prog-list-wrapper">
+        <div id="progContent">
+          <div class="empty-state">No program loaded. Click <strong>Show Program</strong> to preview.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- sidebar: notes + week-ratio visualizer + copy -->
+    <aside class="sidebar-card">
+      <!-- notes -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.25rem;">
+        <div class="notes-area">
+          <label for="notesInput">📝 Notes</label>
+          <textarea id="notesInput" placeholder="Add your clinical notes, patient progress, or modifications..."></textarea>
+        </div>
+      </div>
+
+      <!-- ratio visualizer box (updates per open week) -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.25rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.3rem;">
+          <span style="font-weight:600; font-size:0.9rem; color:#1a3b57;">📊 Run / Walk Ratio</span>
+          <span id="vizWeekLabel" style="font-size:0.65rem; color:#6a7e96; text-transform:uppercase; letter-spacing:0.05em;">—</span>
+        </div>
+        <div id="visualizerContainer" class="viz-container">
+          <div class="viz-no-data">Open a week to see its run/walk ratio.</div>
+        </div>
+        <div class="viz-legend-ratio">
+          <span class="legend-run">Run</span>
+          <span class="legend-walk">Walk</span>
+        </div>
+      </div>
+
+      <!-- copy & paste tools -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.5rem;">
+        <div class="copy-section">
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+            <span style="font-weight:600;font-size:0.9rem;color:#1a3b57;">📋 Copy Program</span>
+            <span style="font-size:0.75rem;color:#6a7e96;">(includes all weeks &amp; days)</span>
+          </div>
+          <div class="copy-actions">
+            <button class="btn-copy" id="copyProgramBtn">📄 Copy Program</button>
+            <button class="btn-copy" id="copyNotesBtn">📝 Copy Notes</button>
+          </div>
+          <div id="copyFeedback" class="copy-feedback"></div>
+          <hr class="divider" />
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+            <span style="font-size:0.8rem;color:#4b5f73;">Paste copied data anywhere (email, notes, EMR).</span>
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
+</div>
 
-  <div class="toast" id="toast"></div>
-  <datalist id="activitySuggestions"></datalist>
+<script>
+  /***********************
+   * PROGRAM DATA
+   ***********************/
+  const PROGRAMS = {
+    minorInjury: {
+      meta: { title: 'Minor Injury Program', weeks: 3 },
+      weeks: {
+        1: [
+          { label: 'Day 1', total: 10, run: 1, walk: 1 },
+          { label: 'Day 2', total: 15, run: 1, walk: 1 },
+          { label: 'Day 3', total: 20, run: 1, walk: 1 },
+          { label: 'Day 4', total: 25, run: 1, walk: 1 },
+          { label: 'Day 5', total: 30, run: 1, walk: 1 }
+        ],
+        2: [
+          { label: 'Day 1', total: 20, run: 2, walk: 1 },
+          { label: 'Day 2', total: 30, run: 2, walk: 1 },
+          { label: 'Day 3', total: 20, run: 3, walk: 1 },
+          { label: 'Day 4', total: 30, run: 3, walk: 1 },
+          { label: 'Day 5', total: 20, run: 4, walk: 1 }
+        ],
+        3: [
+          { label: 'Day 1', total: 30, run: 4, walk: 1 },
+          { label: 'Day 2', total: 20, run: 9, walk: 1 },
+          { label: 'Day 3', total: 30, run: 9, walk: 1 },
+          { label: 'Day 4', total: 30, run: 14, walk: 1 },
+          { label: 'Day 5', total: 30, run: 30, walk: 0 }
+        ]
+      }
+    },
 
-  <script>
-    /* ---------------- State ---------------- */
-    let sessions = [];
-    let sessionIdCounter = 0;
-    let chartInstance = null;
-    const openWeeks = new Set();
-    const openRows  = new Set();
+    eliteAthlete: {
+      meta: { title: 'Elite Athlete Program', weeks: 2 },
+      weeks: {
+        1: [
+          { label: 'Day 1', total: 10, run: 1, walk: 1 },
+          { label: 'Day 2', total: 15, run: 2, walk: 1 },
+          { label: 'Day 3', total: 20, run: 3, walk: 1 },
+          { label: 'Day 4', total: 25, run: 4, walk: 1 },
+          { label: 'Day 5', total: 30, run: 9, walk: 1 }
+        ],
+        2: [
+          { label: 'Day 1', total: 35, run: 9, walk: 1 },
+          { label: 'Day 2', total: 45, run: 14, walk: 1 },
+          { label: 'Day 3', total: 20, run: 20, walk: 0 },
+          { label: 'Day 4', total: 50, run: 9, walk: 1 },
+          { label: 'Day 5', total: 60, run: 14, walk: 1 }
+        ]
+      }
+    },
 
-    /* ---------------- Heatmap colors ---------------- */
-    const heatmapColors = [
-      '#00BFFF','#00B3FF','#0099FF','#007FFF','#0059FF',
-      '#FFB347','#FF9933','#FF6600','#FF3300','#FF0000','#B22222'
-    ];
-
-    const DEFAULT_ACTIVITIES = [
-      'Physiotherapy','Walking','Running','Cycling','Swimming',
-      'Strength Training','Yoga','Stretching','Balance Training','Gait Training'
-    ];
-
-    /* ---------------- DOM refs ---------------- */
-    const $ = (id) => document.getElementById(id);
-    const sessionList    = $('sessionList');
-    const chartWrap      = $('chartWrap');
-    const chartPlaceholder = $('chartPlaceholder');
-    const closeChartBtn  = $('closeChartBtn');
-    const toastEl        = $('toast');
-
-    /* ---------------- Toast ---------------- */
-    let toastTimer;
-    function toast(msg, kind = 'ok') {
-      toastEl.textContent = msg;
-      toastEl.className = `toast show ${kind}`;
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
-    }
-
-    /* ---------------- Onboarding ---------------- */
-    function showOnboardingIfNeeded() {
-      if (!localStorage.getItem('rehab_onboarding_dismissed')) {
-        $('onboarding').style.display = 'flex';
+    majorInjury: {
+      meta: { title: 'Major Injury Program', weeks: 8 },
+      weeks: {
+        1: [{ label: 'Day 1', total: 6, run: 1, walk: 1 }, { label: 'Day 2', total: 8, run: 1, walk: 1 }, { label: 'Day 3', total: 10, run: 1, walk: 1 }, { label: 'Day 4', total: 12, run: 1, walk: 1 }, { label: 'Day 5', total: 14, run: 1, walk: 1 }],
+        2: [{ label: 'Day 1', total: 16, run: 1, walk: 1 }, { label: 'Day 2', total: 18, run: 1, walk: 1 }, { label: 'Day 3', total: 20, run: 1, walk: 1 }, { label: 'Day 4', total: 22, run: 1, walk: 1 }, { label: 'Day 5', total: 24, run: 1, walk: 1 }],
+        3: [{ label: 'Day 1', total: 26, run: 1, walk: 1 }, { label: 'Day 2', total: 28, run: 1, walk: 1 }, { label: 'Day 3', total: 30, run: 1, walk: 1 }, { label: 'Day 4', total: 9, run: 2, walk: 1 }, { label: 'Day 5', total: 12, run: 2, walk: 1 }],
+        4: [{ label: 'Day 1', total: 15, run: 2, walk: 1 }, { label: 'Day 2', total: 18, run: 2, walk: 1 }, { label: 'Day 3', total: 21, run: 2, walk: 1 }, { label: 'Day 4', total: 24, run: 2, walk: 1 }, { label: 'Day 5', total: 27, run: 2, walk: 1 }],
+        5: [{ label: 'Day 1', total: 30, run: 2, walk: 1 }, { label: 'Day 2', total: 12, run: 3, walk: 1 }, { label: 'Day 3', total: 16, run: 3, walk: 1 }, { label: 'Day 4', total: 20, run: 3, walk: 1 }, { label: 'Day 5', total: 24, run: 3, walk: 1 }],
+        6: [{ label: 'Day 1', total: 28, run: 3, walk: 1 }, { label: 'Day 2', total: 32, run: 3, walk: 1 }, { label: 'Day 3', total: 10, run: 4, walk: 1 }, { label: 'Day 4', total: 15, run: 4, walk: 1 }, { label: 'Day 5', total: 20, run: 4, walk: 1 }],
+        7: [{ label: 'Day 1', total: 25, run: 4, walk: 1 }, { label: 'Day 2', total: 30, run: 4, walk: 1 }, { label: 'Day 3', total: 10, run: 9, walk: 1 }, { label: 'Day 4', total: 20, run: 9, walk: 1 }, { label: 'Day 5', total: 30, run: 9, walk: 1 }],
+        8: [{ label: 'Day 1', total: 15, run: 14, walk: 1 }, { label: 'Day 2', total: 30, run: 14, walk: 1 }, { label: 'Day 3', total: 20, run: 20, walk: 0 }, { label: 'Day 4', total: 25, run: 25, walk: 0 }, { label: 'Day 5', total: 30, run: 30, walk: 0 }]
       }
     }
-    function dismissOnboarding() {
-      localStorage.setItem('rehab_onboarding_dismissed', 'true');
-      $('onboarding').style.display = 'none';
-    }
+  };
 
-    /* ---------------- Helpers ---------------- */
-    function sessionTimestamp(s) {
-      return new Date(s.date + 'T' + (s.time || '12:00')).getTime();
-    }
+  /***********************
+   * HELPERS
+   ***********************/
+  function calculateReps(total, run, walk) {
+    const seg = run + walk;
+    if (seg <= 0) return '—';
+    if (walk === 0) return '1';
+    return Math.floor(total / seg);
+  }
 
-    function getWeekStart(dateStr) {
-      const d = new Date(dateStr + 'T00:00:00');
-      const day = d.getDay();
-      const diff = (day === 0 ? -6 : 1 - day);
-      d.setDate(d.getDate() + diff);
-      return d.toISOString().split('T')[0];
-    }
+  // generate plain-text program representation
+  function getProgramText(key) {
+    const program = PROGRAMS[key];
+    if (!program) return 'No program loaded.';
+    const { title, weeks: totalWeeks } = program.meta;
+    let lines = [];
+    lines.push(`${title} (${totalWeeks} weeks)`);
+    lines.push('─'.repeat(40));
 
-    function formatWeekRange(weekStart) {
-      const start = new Date(weekStart + 'T00:00:00');
-      const end = new Date(start);
-      end.setDate(end.getDate() + 6);
-      const fmt = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      return `${fmt(start)} – ${fmt(end)}`;
-    }
-
-    function formatShortDate(dateStr) {
-      const d = new Date(dateStr + 'T00:00:00');
-      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    function groupSessionsByWeek(list) {
-      const groups = new Map();
-      list.forEach(s => {
-        const key = s.date ? getWeekStart(s.date) : 'no-date';
-        if (!groups.has(key)) groups.set(key, []);
-        groups.get(key).push(s);
-      });
-      return [...groups.entries()]
-        .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-        .map(([weekStart, items]) => ({
-          weekStart,
-          items: items.sort((a, b) => sessionTimestamp(a) - sessionTimestamp(b))
-        }));
-    }
-
-    function autoOpenLatestWeek() {
-      if (openWeeks.size > 0) return;
-      const valid = sessions.filter(s => s.date);
-      if (valid.length === 0) return;
-      const latest = valid.reduce((a, b) => sessionTimestamp(a) > sessionTimestamp(b) ? a : b);
-      openWeeks.add(getWeekStart(latest.date));
-    }
-
-    function toggleWeek(weekStart, ev) {
-      if (ev) ev.stopPropagation();
-      const bin = document.querySelector(`.week-bin[data-week="${weekStart}"]`);
-      if (!bin) return;
-      const nowOpen = !bin.classList.contains('open');
-      bin.classList.toggle('open', nowOpen);
-      if (nowOpen) openWeeks.add(weekStart);
-      else openWeeks.delete(weekStart);
-    }
-
-    function toggleAllWeeks(open) {
-      document.querySelectorAll('.week-bin').forEach(bin => {
-        const key = bin.dataset.week;
-        bin.classList.toggle('open', open);
-        if (open) openWeeks.add(key);
-        else openWeeks.delete(key);
+    for (let wk = 1; wk <= totalWeeks; wk++) {
+      const weekData = program.weeks[wk] || [];
+      lines.push(`\nWEEK ${wk}`);
+      if (weekData.length === 0) {
+        lines.push('  (no structured days)');
+        continue;
+      }
+      weekData.forEach(r => {
+        const runWalk = r.walk === 0 ? `${r.run} min continuous` : `Run ${r.run} · Walk ${r.walk}`;
+        const reps = calculateReps(r.total, r.run, r.walk);
+        lines.push(`  ${r.label.padEnd(6)}  ${r.total} min  ${runWalk.padEnd(18)}  reps: ${reps}`);
       });
     }
+    return lines.join('\n');
+  }
 
-    function toggleRow(id, ev) {
-      if (ev) ev.stopPropagation();
-      const row = document.querySelector(`.session-row[data-id="${id}"]`);
-      const edit = document.querySelector(`.session-edit[data-id="${id}"]`);
-      if (!row || !edit) return;
-      const nowOpen = !row.classList.contains('open');
-      row.classList.toggle('open', nowOpen);
-      edit.classList.toggle('open', nowOpen);
-      if (nowOpen) openRows.add(id);
-      else openRows.delete(id);
+  /***********************
+   * RENDER RATIO VISUALIZER (per week)
+   * Shows each day's run vs walk proportion as a stacked horizontal bar.
+   ***********************/
+  const vizContainer = document.getElementById('visualizerContainer');
+  const vizWeekLabel = document.getElementById('vizWeekLabel');
+
+  function renderWeekRatio(programKey, weekNumber) {
+    const program = PROGRAMS[programKey];
+    if (!program) {
+      vizContainer.innerHTML = '<div class="viz-no-data">No program loaded.</div>';
+      vizWeekLabel.textContent = '—';
+      return;
+    }
+    const weekData = program.weeks[weekNumber];
+    if (!weekData || weekData.length === 0) {
+      vizContainer.innerHTML = '<div class="viz-no-data">No structured days in this week.</div>';
+      vizWeekLabel.textContent = `Week ${weekNumber}`;
+      return;
     }
 
-    /* ---------------- Sessions ---------------- */
-    function addSession(date = '', activity = '', intensity = '', pain = '', time = '') {
-      const id = sessionIdCounter++;
-      const d = date || new Date().toISOString().split('T')[0];
-      sessions.push({
-        id,
-        date: d,
-        time: time || '',
-        activity: activity || '',
-        intensity: intensity !== '' ? intensity : '',
-        pain: pain !== '' ? pain : ''
-      });
-      openWeeks.add(getWeekStart(d));
-      openRows.add(id);
-      renderSessions();
-      if (chartInstance) refreshChartData(); else hideChart();
-      toast('Session added');
-    }
+    vizWeekLabel.textContent = `Week ${weekNumber}`;
 
-    function removeSession(id) {
-      sessions = sessions.filter(s => s.id !== id);
-      openRows.delete(id);
-      renderSessions();
-      if (chartInstance) refreshChartData(); else hideChart();
-      toast('Session removed', 'err');
-    }
+    let html = '';
+    weekData.forEach((day, idx) => {
+      const run = day.run;
+      const walk = day.walk;
+      const total = run + walk;
 
-    function updateSession(id, field, value) {
-      const s = sessions.find(x => x.id === id);
-      if (!s) return;
-      const prevDate = s.date;
-      s[field] = value;
-      if (field === 'date' && value !== prevDate) {
-        openWeeks.add(getWeekStart(value));
-        renderSessions();
-      } else {
-        // Update just the affected row display without full re-render
-        updateRowDisplay(id);
-        updateSummary();
-      }
-      if (chartInstance && chartWrap.style.display !== 'none') refreshChartData();
-    }
-
-    function updateRowDisplay(id) {
-      const s = sessions.find(x => x.id === id);
-      const row = document.querySelector(`.session-row[data-id="${id}"]`);
-      if (!s || !row) return;
-      const painColor = s.pain !== '' ? getHeatmapColor(parseFloat(s.pain)) : '#c4cbd2';
-      row.querySelector('.date-cell').textContent = formatShortDate(s.date) + (s.time ? ' ' + s.time : '');
-      const actEl = row.querySelector('.activity-cell');
-      actEl.textContent = s.activity || 'Untitled';
-      actEl.classList.toggle('empty', !s.activity);
-      row.querySelector('.pill.intensity').textContent = s.intensity !== '' ? s.intensity : '–';
-      const painPill = row.querySelector('.pill.pain');
-      painPill.textContent = s.pain !== '' ? s.pain : '–';
-      painPill.style.background = painColor;
-    }
-
-    function clearAllSessions() {
-      if (sessions.length === 0) { toast('No sessions to clear', 'err'); return; }
-      if (!confirm('Clear all sessions? This cannot be undone.')) return;
-      sessions = [];
-      sessionIdCounter = 0;
-      openWeeks.clear();
-      openRows.clear();
-      renderSessions();
-      hideChart();
-      toast('All sessions cleared', 'err');
-    }
-
-    function restart() {
-      if (sessions.length > 0 && !confirm('Restart and clear everything?')) return;
-      window.location.reload();
-    }
-
-    /* ---------------- Summary ---------------- */
-    function updateSummary() {
-      const valid = sessions.filter(s => s.date);
-      $('sumSessions').textContent = sessions.length;
-
-      if (valid.length === 0) {
-        $('sumRange').textContent = '—';
-        $('sumInt').textContent = '—';
-        $('sumPain').textContent = '—';
-        $('sumLatest').textContent = '—';
-        return;
-      }
-
-      const sorted = valid.slice().sort((a, b) => sessionTimestamp(a) - sessionTimestamp(b));
-      const first = sorted[0].date, last = sorted[sorted.length - 1].date;
-      $('sumRange').innerHTML = `${formatShortDate(first)} <small>→</small> ${formatShortDate(last)}`;
-
-      const ints = sorted.map(s => parseFloat(s.intensity)).filter(n => !isNaN(n));
-      const pains = sorted.map(s => parseFloat(s.pain)).filter(n => !isNaN(n));
-
-      $('sumInt').innerHTML = ints.length
-        ? `${(ints.reduce((a,b)=>a+b,0)/ints.length).toFixed(1)} <small>/ 10</small>`
-        : '—';
-      $('sumPain').innerHTML = pains.length
-        ? `${(pains.reduce((a,b)=>a+b,0)/pains.length).toFixed(1)} <small>/ 10</small>`
-        : '—';
-
-      const latest = sorted[sorted.length - 1];
-      const lp = parseFloat(latest.pain);
-      $('sumLatest').innerHTML = !isNaN(lp)
-        ? `${lp} <small>${latest.activity || ''}</small>`
-        : '—';
-    }
-
-    /* ---------------- Render ---------------- */
-    function renderSessions() {
-      if (sessions.length === 0) {
-        sessionList.innerHTML = `<div class="empty">No sessions yet. Add one to begin tracking.</div>`;
-        renderActivitySuggestions();
-        updateSummary();
-        return;
-      }
-
-      autoOpenLatestWeek();
-      const weeks = groupSessionsByWeek(sessions);
-
-      sessionList.innerHTML = weeks.map(({ weekStart, items }) => {
-        const intensities = items.map(s => parseFloat(s.intensity)).filter(n => !isNaN(n));
-        const pains       = items.map(s => parseFloat(s.pain)).filter(n => !isNaN(n));
-        const avg = (arr) => arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1) : '—';
-        const label = weekStart === 'no-date' ? 'Undated' : `Week of ${formatWeekRange(weekStart)}`;
-        const isOpen = openWeeks.has(weekStart);
-
-        return `
-          <div class="week-bin ${isOpen ? 'open' : ''}" data-week="${weekStart}">
-            <div class="week-header" onclick="toggleWeek('${weekStart}', event)">
-              <span class="week-caret">▶</span>
-              <span class="week-label">${label}</span>
-              <span class="week-meta">
-                <span>${items.length} session${items.length !== 1 ? 's' : ''}</span>
-                <span class="dot">·</span>
-                <span>avg int ${avg(intensities)}</span>
-                <span class="dot">·</span>
-                <span>avg pain ${avg(pains)}</span>
-              </span>
-            </div>
-            <div class="week-body">
-              ${items.map(s => renderSessionRow(s)).join('')}
+      if (total === 0) {
+        html += `
+          <div class="viz-row">
+            <span class="viz-day-label">${day.label.replace('Day ', 'D')}</span>
+            <div class="viz-ratio-bar" style="background:#f0f4fa;">
+              <span style="font-size:0.55rem;color:#6a7e96;line-height:18px;padding-left:6px;">—</span>
             </div>
           </div>
         `;
-      }).join('');
-
-      renderActivitySuggestions();
-      updateSummary();
-    }
-
-    function renderSessionRow(s) {
-      const idx = sessions.findIndex(x => x.id === s.id) + 1;
-      const painColor = s.pain !== '' ? getHeatmapColor(parseFloat(s.pain)) : '#c4cbd2';
-      const rowOpen = openRows.has(s.id);
-      return `
-        <div class="session-row ${rowOpen ? 'open' : ''}" data-id="${s.id}"
-             onclick="toggleRow(${s.id}, event)" title="Click to edit">
-          <span class="date-cell">${formatShortDate(s.date)}${s.time ? ' ' + s.time : ''}</span>
-          <span class="activity-cell ${s.activity ? '' : 'empty'}">${escapeAttr(s.activity || 'Untitled')}</span>
-          <span class="pill intensity">${s.intensity !== '' ? s.intensity : '–'}</span>
-          <span class="pill pain" style="background:${painColor}">${s.pain !== '' ? s.pain : '–'}</span>
-          <span class="row-caret">▶</span>
-        </div>
-        <div class="session-edit ${rowOpen ? 'open' : ''}" data-id="${s.id}">
-          <div class="field">
-            <label>Date</label>
-            <input type="date" value="${s.date}"
-                   onchange="updateSession(${s.id}, 'date', this.value)">
-          </div>
-          <div class="field">
-            <label>Time</label>
-            <input type="time" value="${s.time || ''}"
-                   onchange="updateSession(${s.id}, 'time', this.value)">
-          </div>
-          <div class="field" style="grid-column: span 2;">
-            <label>Activity</label>
-            <input type="text" list="activitySuggestions" value="${escapeAttr(s.activity)}"
-                   placeholder="e.g. Physiotherapy" autocomplete="off"
-                   onchange="updateSession(${s.id}, 'activity', this.value)">
-          </div>
-          <div class="field">
-            <label>Intensity (0–10)</label>
-            <input type="number" min="0" max="10" value="${s.intensity}"
-                   onchange="updateSession(${s.id}, 'intensity', this.value)">
-          </div>
-          <div class="field">
-            <label>Pain (0–10)</label>
-            <input type="number" min="0" max="10" value="${s.pain}"
-                   onchange="updateSession(${s.id}, 'pain', this.value)">
-          </div>
-          <div class="edit-actions">
-            <button class="btn btn-danger btn-sm"
-                    onclick="event.stopPropagation(); removeSession(${s.id});">Remove</button>
-          </div>
-        </div>
-      `;
-    }
-
-    function escapeAttr(str) {
-      return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    }
-
-    /* ---------------- Activity suggestions ---------------- */
-    function renderActivitySuggestions() {
-      const seen = new Set();
-      const userActivities = sessions
-        .map(s => (s.activity || '').trim())
-        .filter(a => {
-          if (!a) return false;
-          const lower = a.toLowerCase();
-          if (seen.has(lower)) return false;
-          seen.add(lower);
-          return true;
-        });
-      const merged = [
-        ...DEFAULT_ACTIVITIES,
-        ...userActivities.filter(a =>
-          !DEFAULT_ACTIVITIES.some(d => d.toLowerCase() === a.toLowerCase())
-        )
-      ];
-      document.getElementById('activitySuggestions').innerHTML =
-        merged.map(a => `<option value="${escapeAttr(a)}"></option>`).join('');
-    }
-
-    /* ---------------- Chart ---------------- */
-    function hideChart() {
-      chartWrap.style.display = 'none';
-      chartPlaceholder.style.display = 'flex';
-      closeChartBtn.style.display = 'none';
-      if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-    }
-
-    function showChart() {
-      chartWrap.style.display = 'block';
-      chartPlaceholder.style.display = 'none';
-      closeChartBtn.style.display = 'inline-flex';
-    }
-
-    function getHeatmapColor(pain) {
-      const p = Math.min(10, Math.max(0, Math.floor(pain)));
-      return heatmapColors[p];
-    }
-
-    function getValidSessions() {
-      return sessions
-        .filter(s => s.date && s.intensity !== '' && s.pain !== ''
-                     && s.intensity !== null && s.pain !== null)
-        .sort((a, b) => sessionTimestamp(a) - sessionTimestamp(b));
-    }
-
-    function buildPoints(valid) {
-      const dateCount = {};
-      return valid.map(s => {
-        let t = s.time;
-        if (!t) {
-          const count = (dateCount[s.date] = (dateCount[s.date] || 0) + 1);
-          const hour = 9 + (count - 1) * 2;
-          t = String(hour).padStart(2, '0') + ':00';
-        }
-        return { x: new Date(s.date + 'T' + t).getTime(), y: parseFloat(s.intensity) };
-      });
-    }
-
-    function generateGraph() {
-      const valid = getValidSessions();
-      if (valid.length < 1) {
-        toast('Add at least one session with date, intensity, and pain.', 'err');
         return;
       }
 
-      const points     = buildPoints(valid);
-      const intens     = valid.map(s => parseFloat(s.intensity));
-      const pains      = valid.map(s => parseFloat(s.pain));
-      const activities = valid.map(s => s.activity || 'N/A');
-      const times      = valid.map(s => s.time || '');
+      const runPct = (run / total) * 100;
+      const walkPct = (walk / total) * 100;
 
-      if (chartInstance) chartInstance.destroy();
+      // labels inside the bars (only if enough width)
+      const runLabel = runPct > 18 ? `${run}m` : '';
+      const walkLabel = walkPct > 18 ? `${walk}m` : '';
 
-      const ctx = document.getElementById('rehabChart').getContext('2d');
-      chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'Intensity',
-            data: points,
-            borderColor: '#3d6b8c',
-            backgroundColor: 'rgba(61,107,140,0.08)',
-            fill: true,
-            pointBackgroundColor: pains.map(getHeatmapColor),
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2,
-            pointRadius: 5,
-            pointHoverRadius: 8,
-            tension: 0.28,
-            borderWidth: 2.5
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            duration: 600,
-            easing: 'easeOutQuart',
-            delay: (context) => context.type === 'data' ? context.dataIndex * 40 : 0
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 10,
-              ticks: { color: '#7b8794', font: { size: 11 }, stepSize: 2 },
-              grid: { color: 'rgba(31,41,51,0.05)' },
-              border: { display: false },
-              title: { display: true, text: 'Intensity', color: '#52606d', font: { size: 11, weight: '600' } }
-            },
-            x: {
-              type: 'time',
-              time: {
-                unit: 'day',
-                tooltipFormat: 'MMM d, yyyy',
-                displayFormats: {
-                  millisecond: 'HH:mm', second: 'HH:mm', minute: 'HH:mm',
-                  hour: 'MMM d HH:mm', day: 'MMM d', week: 'MMM d',
-                  month: 'MMM yyyy', quarter: 'MMM yyyy', year: 'yyyy'
-                }
-              },
-              ticks: { color: '#7b8794', font: { size: 11 }, maxRotation: 0, autoSkipPadding: 20 },
-              grid: { display: false },
-              border: { color: '#d9dee3' },
-              title: { display: true, text: 'Session Date', color: '#52606d', font: { size: 11, weight: '600' } }
-            }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: '#1f2933',
-              titleColor: '#ffffff',
-              bodyColor: '#e4e7eb',
-              titleFont: { size: 12, weight: '600' },
-              bodyFont: { size: 12 },
-              padding: 10,
-              cornerRadius: 6,
-              displayColors: false,
-              callbacks: {
-                title: (items) => {
-                  const i = items[0].dataIndex;
-                  const d = new Date(items[0].parsed.x);
-                  const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                  return times[i] ? `${dateStr} · ${times[i]}` : dateStr;
-                },
-                label: (ctx) => {
-                  const i = ctx.dataIndex;
-                  return [
-                    `Activity: ${activities[i]}`,
-                    `Intensity: ${intens[i]}`,
-                    `Pain: ${pains[i]}`
-                  ];
-                }
-              }
-            }
-          }
+      html += `
+        <div class="viz-row" title="${day.label}: Run ${run} min (${Math.round(runPct)}%) · Walk ${walk} min (${Math.round(walkPct)}%)">
+          <span class="viz-day-label">${day.label.replace('Day ', 'D')}</span>
+          <div class="viz-ratio-bar">
+            <div class="viz-ratio-run" style="width:${runPct}%;">${runLabel}</div>
+            <div class="viz-ratio-walk" style="width:${walkPct}%;">${walkLabel}</div>
+          </div>
+        </div>
+      `;
+    });
+
+    vizContainer.innerHTML = html;
+  }
+
+  function clearVisualizer() {
+    vizContainer.innerHTML = '<div class="viz-no-data">Open a week to see its run/walk ratio.</div>';
+    vizWeekLabel.textContent = '—';
+  }
+
+  /***********************
+   * RENDER PROGRAM
+   ***********************/
+  const showBtn = document.getElementById('showBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const profileSelect = document.getElementById('profile');
+  const progContent = document.getElementById('progContent');
+  const progTitle = document.getElementById('progTitle');
+  const progSubtitle = document.getElementById('progSubtitle');
+  const weeksCount = document.getElementById('weeksCount');
+
+  let currentProgramKey = 'minorInjury';
+
+  function resetAll() {
+    profileSelect.value = 'minorInjury';
+    currentProgramKey = 'minorInjury';
+    progTitle.textContent = 'Select a profile';
+    progSubtitle.textContent = 'Programs displayed as expandable weeks — click a week to view daily intervals.';
+    weeksCount.textContent = '—';
+    progContent.innerHTML = '<div class="empty-state">No program loaded. Click <strong>Show Program</strong> to preview.</div>';
+    document.getElementById('copyFeedback').textContent = '';
+    clearVisualizer();
+  }
+
+  function renderProgram(key) {
+    const program = PROGRAMS[key];
+    if (!program) return;
+    currentProgramKey = key;
+    const { title, weeks: totalWeeks } = program.meta;
+
+    progTitle.textContent = title;
+    progSubtitle.textContent = `This program contains ${totalWeeks} structured week${totalWeeks > 1 ? 's' : ''}. Expand a week to view daily intervals.`;
+    weeksCount.textContent = `${totalWeeks} wk${totalWeeks > 1 ? 's' : ''}`;
+
+    progContent.innerHTML = '';
+    clearVisualizer();
+
+    for (let wk = 1; wk <= totalWeeks; wk++) {
+      const weekData = program.weeks[wk] || [];
+      const progDiv = document.createElement('div');
+      progDiv.className = 'prog';
+
+      const head = document.createElement('div');
+      head.className = 'head';
+      head.innerHTML = `<h3>Week ${wk}</h3><div class="chev">›</div>`;
+      head.dataset.week = wk;
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      body.id = `week-body-${wk}`;
+
+      let tableHtml = `<div class="week-block"><h4>Week ${wk} · daily intervals</h4><table><thead><tr><th>Day</th><th>Total</th><th>Run / Walk</th><th>Reps</th></tr></thead><tbody>`;
+      if (weekData.length === 0) {
+        tableHtml += `<tr><td colspan="4" class="empty-state" style="padding:0.5rem 0;color:#6a7e96;">No structured days.</td></tr>`;
+      } else {
+        weekData.forEach(r => {
+          const runWalk = r.walk === 0 ? `${r.run} min continuous` : `Run ${r.run} · Walk ${r.walk}`;
+          const reps = calculateReps(r.total, r.run, r.walk);
+          tableHtml += `<tr><td class="day-label">${r.label}</td><td>${r.total} min</td><td><span class="badge-runwalk">${runWalk}</span></td><td>${reps}</td></tr>`;
+        });
+      }
+      tableHtml += `</tbody></table></div>`;
+      body.innerHTML = tableHtml;
+
+      progDiv.appendChild(head);
+      progDiv.appendChild(body);
+      progContent.appendChild(progDiv);
+
+      head.addEventListener('click', function () {
+        const isOpen = progDiv.classList.contains('open');
+        document.querySelectorAll('.prog').forEach(p => {
+          p.classList.remove('open');
+          p.querySelector('.body').style.display = 'none';
+        });
+        if (!isOpen) {
+          progDiv.classList.add('open');
+          progDiv.querySelector('.body').style.display = 'block';
+          // update visualizer to show this week's ratio
+          renderWeekRatio(currentProgramKey, wk);
+          setTimeout(() => progDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
+        } else {
+          // closed the only open week → clear visualizer
+          clearVisualizer();
         }
       });
-
-      chartInstance.$activities = activities;
-      chartInstance.$pains = pains;
-      chartInstance.$times = times;
-
-      renderLegend();
-      showChart();
-      toast('Chart generated');
     }
+  }
 
-    function refreshChartData() {
-      const valid = getValidSessions();
-      if (valid.length < 1 || !chartInstance) { hideChart(); return; }
-      const points = buildPoints(valid);
-      const pains  = valid.map(s => parseFloat(s.pain));
-      chartInstance.data.datasets[0].data = points;
-      chartInstance.data.datasets[0].pointBackgroundColor = pains.map(getHeatmapColor);
-      chartInstance.$pains = pains;
-      chartInstance.$activities = valid.map(s => s.activity || 'N/A');
-      chartInstance.$times = valid.map(s => s.time || '');
-      chartInstance.update();
-    }
+  /***********************
+   * COPY & FEEDBACK
+   ***********************/
+  const copyFeedback = document.getElementById('copyFeedback');
+  const notesInput = document.getElementById('notesInput');
 
-    function renderLegend() {
-      $('legend').innerHTML = `
-        <span class="legend-title">Pain level</span>
-        ${heatmapColors.map((c, i) => `
-          <span class="legend-item">
-            <span class="swatch" style="background:${c};"></span>${i}
-          </span>
-        `).join('')}
-      `;
-    }
+  function showFeedback(msg, isSuccess = true) {
+    copyFeedback.textContent = msg;
+    copyFeedback.className = 'copy-feedback' + (isSuccess ? ' success' : '');
+    setTimeout(() => {
+      copyFeedback.textContent = '';
+      copyFeedback.className = 'copy-feedback';
+    }, 4000);
+  }
 
-    /* ---------------- Sample data ---------------- */
-    function loadSampleData(autoGenerate = false) {
-      if (sessions.length > 0 && !autoGenerate) {
-        if (!confirm('Replace current data with sample data?')) return;
+  function copyToClipboard(text) {
+    if (!navigator.clipboard) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showFeedback('✓ Copied!', true);
+      } catch (e) {
+        showFeedback('❌ Copy failed', false);
       }
-      sessions = [];
-      sessionIdCounter = 0;
-      openWeeks.clear();
-      openRows.clear();
-
-      const sample = [
-        { date: '2026-01-15', time: '08:30', activity: 'Running',           intensity: 3, pain: 2 },
-        { date: '2026-01-15', time: '17:00', activity: 'Stretching',        intensity: 2, pain: 1 },
-        { date: '2026-01-17', time: '09:00', activity: 'Running',           intensity: 4, pain: 3 },
-        { date: '2026-01-19', time: '10:30', activity: 'Swimming',          intensity: 5, pain: 4 },
-        { date: '2026-01-22', time: '08:00', activity: 'Running',           intensity: 6, pain: 5 },
-        { date: '2026-01-24', time: '16:00', activity: 'Cycling',           intensity: 7, pain: 6 },
-        { date: '2026-01-26', time: '11:00', activity: 'Strength Training', intensity: 5, pain: 3 },
-        { date: '2026-01-29', time: '07:30', activity: 'Running',           intensity: 3, pain: 1 },
-        { date: '2026-01-29', time: '18:00', activity: 'Yoga',              intensity: 2, pain: 1 },
-        { date: '2026-02-01', time: '09:15', activity: 'Running',           intensity: 8, pain: 7 },
-        { date: '2026-02-03', time: '17:30', activity: 'Cycling',           intensity: 4, pain: 2 },
-        { date: '2026-02-05', time: '10:00', activity: 'Swimming',          intensity: 6, pain: 4 },
-        { date: '2026-02-15', time: '08:30', activity: 'Running',           intensity: 3, pain: 2 },
-        { date: '2026-02-15', time: '17:00', activity: 'Stretching',        intensity: 2, pain: 1 },
-        { date: '2026-02-17', time: '09:00', activity: 'Running',           intensity: 4, pain: 3 },
-        { date: '2026-02-19', time: '10:30', activity: 'Swimming',          intensity: 5, pain: 4 },
-        { date: '2026-02-22', time: '08:00', activity: 'Running',           intensity: 6, pain: 5 },
-        { date: '2026-02-25', time: '16:00', activity: 'Cycling',           intensity: 7, pain: 6 },
-        { date: '2026-02-26', time: '11:00', activity: 'Strength Training', intensity: 5, pain: 3 },
-        { date: '2026-02-28', time: '07:30', activity: 'Running',           intensity: 3, pain: 1 },
-        { date: '2026-02-29', time: '18:00', activity: 'Yoga',              intensity: 2, pain: 1 },
-        { date: '2026-03-01', time: '09:15', activity: 'Running',           intensity: 8, pain: 7 },
-        { date: '2026-03-03', time: '17:30', activity: 'Cycling',           intensity: 4, pain: 2 },
-        { date: '2026-03-05', time: '10:00', activity: 'Swimming',          intensity: 6, pain: 4 }
-      ];
-
-      sample.forEach(d => {
-        sessions.push({
-          id: sessionIdCounter++,
-          date: d.date, time: d.time,
-          activity: d.activity,
-          intensity: d.intensity, pain: d.pain
-        });
-      });
-
-      const latest = sample.reduce((a, b) => a.date > b.date ? a : b);
-      openWeeks.add(getWeekStart(latest.date));
-
-      renderSessions();
-      dismissOnboarding();
-      toast('Sample data loaded');
-
-      if (autoGenerate) setTimeout(() => generateGraph(), 200);
+      document.body.removeChild(ta);
+      return;
     }
-
-    /* ---------------- Export ---------------- */
-    function exportData() {
-      if (sessions.length === 0) { toast('No data to export', 'err'); return; }
-      const headers = ['Date', 'Time', 'Activity', 'Intensity', 'Pain Level'];
-      const rows = sessions
-        .slice()
-        .sort((a, b) => sessionTimestamp(a) - sessionTimestamp(b))
-        .map(s => [s.date, s.time, s.activity, s.intensity, s.pain]);
-      const csv = [headers, ...rows]
-        .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
-        .join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `rehab_data_${new Date().toISOString().split('T')[0]}.csv`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast('Exported as CSV');
-    }
-
-    /* ---------------- Init ---------------- */
-    document.addEventListener('DOMContentLoaded', () => {
-      if (sessions.length === 0) addSession();
-      renderLegend();
-      renderActivitySuggestions();
-      showOnboardingIfNeeded();
+    navigator.clipboard.writeText(text).then(() => {
+      showFeedback('✓ Copied!', true);
+    }).catch(() => {
+      showFeedback('❌ Copy failed', false);
     });
-  </script>
+  }
+
+  document.getElementById('copyProgramBtn').addEventListener('click', function () {
+    const key = currentProgramKey || profileSelect.value;
+    const txt = getProgramText(key);
+    copyToClipboard(txt);
+  });
+
+  document.getElementById('copyNotesBtn').addEventListener('click', function () {
+    const notes = notesInput.value.trim();
+    if (!notes) {
+      showFeedback('✎ Notes are empty', false);
+      return;
+    }
+    copyToClipboard(notes);
+  });
+
+  /***********************
+   * EVENT LISTENERS
+   ***********************/
+  showBtn.addEventListener('click', () => {
+    const key = profileSelect.value;
+    renderProgram(key);
+  });
+
+  resetBtn.addEventListener('click', resetAll);
+
+  profileSelect.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') renderProgram(profileSelect.value);
+  });
+
+  // init
+  resetAll();
+</script>
 </body>
 </html>
