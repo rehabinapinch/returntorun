@@ -483,6 +483,158 @@
       margin: 0.2rem 0 0.6rem;
     }
 
+    /* Daily Ratio card */
+    .ratio-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .ratio-card .ratio-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .ratio-card .ratio-header h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1a3b57;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .ratio-card .ratio-header .week-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: #f1f5fa;
+      padding: 0.15rem 0.7rem;
+      border-radius: 40px;
+      color: #1e3d5e;
+    }
+
+    .ratio-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ratio-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.4rem;
+      border-radius: 10px;
+      background: #fafdff;
+      border: 1px solid #f0f4fa;
+    }
+
+    .ratio-item .day-name {
+      font-weight: 500;
+      color: #1a3b57;
+      min-width: 3rem;
+    }
+
+    .ratio-item .ratio-bar {
+      flex: 1;
+      display: flex;
+      height: 10px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #e7edf5;
+      margin: 0 0.6rem;
+    }
+
+    .ratio-item .ratio-bar .run-seg {
+      background: #1e3d5e;
+      height: 100%;
+      transition: width 0.2s;
+    }
+
+    .ratio-item .ratio-bar .walk-seg {
+      background: #b0c8e0;
+      height: 100%;
+      transition: width 0.2s;
+    }
+
+    .ratio-item .ratio-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #4b5f73;
+      white-space: nowrap;
+      min-width: 4.5rem;
+      text-align: right;
+    }
+
+    .ratio-legend {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.7rem;
+      color: #4b5f73;
+      margin-top: 0.25rem;
+      justify-content: center;
+    }
+
+    .ratio-legend span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .ratio-legend .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    /* Screenshot hint */
+    .screenshot-hint {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      background: #f0f7ff;
+      border: 1px solid #d6e6f7;
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem;
+      color: #2c4a6b;
+      line-height: 1.5;
+    }
+
+    .screenshot-hint .icon {
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .screenshot-hint .hint-text {
+      flex: 1;
+    }
+
+    .screenshot-hint .hint-text strong {
+      color: #0b2a3c;
+      font-weight: 600;
+    }
+
+    .screenshot-hint kbd {
+      display: inline-block;
+      background: white;
+      border: 1px solid #c9d8ea;
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      padding: 0.05rem 0.4rem;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #1e3d5e;
+      line-height: 1.4;
+    }
+
     @media (max-width: 640px) {
       body {
         padding: 1rem 0.75rem;
@@ -567,7 +719,7 @@
       </div>
     </section>
 
-    <!-- sidebar: notes + copy -->
+    <!-- sidebar: notes + copy + daily ratio -->
     <aside class="sidebar-card">
       <!-- notes -->
       <div class="card" style="padding:1.25rem 1.25rem 1.5rem;">
@@ -593,6 +745,33 @@
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;">
             <span style="font-size:0.8rem;color:#4b5f73;">Paste copied data anywhere (email, notes, EMR).</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Daily Run/Walk Ratio card -->
+      <div class="card" style="padding:1.25rem 1.25rem 1.5rem;" id="ratioCard">
+        <div class="ratio-card">
+          <div class="ratio-header">
+            <h4>⚖️ Daily Run/Walk Ratio</h4>
+            <span class="week-tag" id="ratioWeekTag">Week 1</span>
+          </div>
+          <div class="ratio-list" id="ratioList">
+            <div style="font-size:0.85rem;color:#6a7e96;padding:0.3rem 0;">Expand a week to see daily ratios.</div>
+          </div>
+          <div class="ratio-legend">
+            <span><span class="dot" style="background:#1e3d5e;"></span> Run</span>
+            <span><span class="dot" style="background:#b0c8e0;"></span> Walk</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screenshot hint -->
+      <div class="screenshot-hint">
+        <span class="icon">💡</span>
+        <div class="hint-text">
+          <strong>Want to save this?</strong> Use your system screenshot tool:<br>
+          <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> (Windows) &nbsp;·&nbsp; <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>4</kbd> (Mac)<br>
+          Or right-click and choose <em>Take Screenshot</em> in Firefox / Edge.
         </div>
       </div>
     </aside>
@@ -676,7 +855,6 @@
     return Math.floor(total / seg);
   }
 
-  // generate plain-text program representation
   function getProgramText(key) {
     const program = PROGRAMS[key];
     if (!program) return 'No program loaded.';
@@ -712,6 +890,9 @@
   const progSubtitle = document.getElementById('progSubtitle');
   const weeksCount = document.getElementById('weeksCount');
 
+  const ratioList = document.getElementById('ratioList');
+  const ratioWeekTag = document.getElementById('ratioWeekTag');
+
   let currentProgramKey = 'minorInjury';
 
   function resetAll() {
@@ -721,8 +902,42 @@
     progSubtitle.textContent = 'Programs displayed as expandable weeks — click a week to view daily intervals.';
     weeksCount.textContent = '—';
     progContent.innerHTML = '<div class="empty-state">No program loaded. Click <strong>Show Program</strong> to preview.</div>';
-    // clear feedback
     document.getElementById('copyFeedback').textContent = '';
+    ratioWeekTag.textContent = 'Week 1';
+    ratioList.innerHTML = '<div style="font-size:0.85rem;color:#6a7e96;padding:0.3rem 0;">Expand a week to see daily ratios.</div>';
+  }
+
+  function updateRatioCard(weekNum) {
+    const program = PROGRAMS[currentProgramKey];
+    if (!program) return;
+    const weekData = program.weeks[weekNum] || [];
+    ratioWeekTag.textContent = `Week ${weekNum}`;
+
+    if (weekData.length === 0) {
+      ratioList.innerHTML = '<div style="font-size:0.85rem;color:#6a7e96;padding:0.3rem 0;">No structured days.</div>';
+      return;
+    }
+
+    let html = '';
+    weekData.forEach(day => {
+      const totalSeg = day.run + day.walk;
+      const runPct = totalSeg > 0 ? (day.run / totalSeg) * 100 : 0;
+      const walkPct = totalSeg > 0 ? (day.walk / totalSeg) * 100 : 0;
+      const runLabel = day.walk === 0 ? `${day.run} min cont.` : `${day.run} min`;
+      const walkLabel = day.walk === 0 ? '—' : `${day.walk} min`;
+
+      html += `
+        <div class="ratio-item">
+          <span class="day-name">${day.label}</span>
+          <div class="ratio-bar">
+            <div class="run-seg" style="width: ${runPct}%;"></div>
+            <div class="walk-seg" style="width: ${walkPct}%;"></div>
+          </div>
+          <span class="ratio-label">${runLabel} / ${walkLabel}</span>
+        </div>
+      `;
+    });
+    ratioList.innerHTML = html;
   }
 
   function renderProgram(key) {
@@ -777,7 +992,11 @@
         if (!isOpen) {
           progDiv.classList.add('open');
           progDiv.querySelector('.body').style.display = 'block';
+          updateRatioCard(wk);
           setTimeout(() => progDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
+        } else {
+          ratioWeekTag.textContent = '—';
+          ratioList.innerHTML = '<div style="font-size:0.85rem;color:#6a7e96;padding:0.3rem 0;">Expand a week to see daily ratios.</div>';
         }
       });
     }
@@ -800,7 +1019,6 @@
 
   function copyToClipboard(text) {
     if (!navigator.clipboard) {
-      // fallback
       const ta = document.createElement('textarea');
       ta.value = text;
       document.body.appendChild(ta);
@@ -842,6 +1060,8 @@
   showBtn.addEventListener('click', () => {
     const key = profileSelect.value;
     renderProgram(key);
+    ratioWeekTag.textContent = '—';
+    ratioList.innerHTML = '<div style="font-size:0.85rem;color:#6a7e96;padding:0.3rem 0;">Expand a week to see daily ratios.</div>';
   });
 
   resetBtn.addEventListener('click', resetAll);
